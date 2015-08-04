@@ -1,0 +1,222 @@
+#!/usr/bin/python
+
+import argparse
+import os
+import yaml
+import subprocess
+
+from math import ceil
+
+parser = argparse.ArgumentParser(description='Process a teamocil file in iTerm2 without tmux.')
+
+parser.add_argument("teamocil_layout",
+                    help="the teamocil layout you wish to process",
+                    metavar="layout_name")
+
+parser.add_argument("--here",
+                    help="run in the current terminal",
+                    action="store_true",
+                    default=False)
+
+parser.add_argument("--edit",
+                    help="edit file in $EDITOR",
+                    action="store_true",
+                    default=False)
+
+parser.add_argument("--show",
+                    help="show the layout instead of executing it",
+                    action="store_true",
+                    default=False)
+
+parser.add_argument("--layout",
+                    help="use specified file rather than that in the .teamocil directory",
+                    action="store_true",
+                    default=None)
+
+args = parser.parse_args()
+
+
+def create_panes_applescript(num_panes, layout="tiled"):
+    """ Create a set of Applescript instructions to generate the desired
+        layout of panes. Attempt to match teamocil layout behaviour as
+        closely as is possible.
+    """
+
+    # Link a variable to the current window.
+    applescript = ["set pane_1 to (current session of current window)"]
+
+    # 'even-horizontal' layouts just split vertically across the screen
+    if layout == 'even-horizontal':
+
+        for p in range(2, num_panes+1):
+            applescript.append(split_pane_applescript(p-1, p, "vertical"))
+
+    # 'main-vertical' layouts have one left pane  that is full height,
+    # and then split the remaining panes horizontally down the right
+    elif layout == 'main-vertical':
+
+        applescript.append(split_pane_applescript(1, 2, "vertical"))
+        if num_panes > 1:
+            for p in range(3, num_panes+1):
+                applescript.append(split_pane_applescript(p-1, p, "horizontal"))
+
+    # 'tiled' layouts create 2 columns and then however many rows as
+    # needed. If there are odd number of panes then the bottom pane
+    # spans two columns. Panes are numbered top to bottom, left to right.
+    elif layout == 'tiled':
+
+        vertical_splits = int(ceil((num_panes / 2.0))) - 1
+        second_columns = num_panes / 2
+
+        for p in range(0, vertical_splits):
+            pp = (p * 2) + 1
+            cp = pp + 2
+            applescript.append(split_pane_applescript(pp, cp, "horizontal"))
+
+        for p in range(0, second_columns):
+            pp = (p * 2) + 1
+            cp = pp + 1
+            applescript.append(split_pane_applescript(pp, cp, "vertical"))
+
+    # Raise an exception if we don't recognise the layout setting.
+    else:
+        raise ValueError("Unknown layout setting.")
+
+    # This is a list of applescript commands
+    return applescript
+
+
+def applescript_to_pane(pane_id, applescript_commands):
+    """ Take the specified applescript command(s) as a string, and wrap
+        them to be passed to the specified pane.
+    """
+
+    return ('''
+                tell pane_{pp}
+                    {applescript}
+                end tell
+            '''.format(pp=pane_id, applescript="\n".join(applescript_commands)))
+
+
+def split_pane_applescript(parent_pane, child_pane, orientation="vertical"):
+    """ Generate applescript instruction to split the parent_pane in
+        the specified orientation and label the new pane with the given
+        child_pane id.
+    """
+
+    return applescript_to_pane(parent_pane,
+                               ["set pane_{cp} to (split {o}ly with same profile)"
+                                .format(pp=parent_pane,
+                                        cp=child_pane,
+                                        o=orientation)])
+
+
+def process_teamocil_file(filename):
+    """ Parse the named teamocil file, generate Applescript to send to
+        iTerm2 to generate panes, name them and run the specified commands
+        in them.
+    """
+
+    # Open up the file and parse it with PyYaml
+    with open(filename, 'r') as f:
+        teamocil_config = yaml.load(f)
+
+    # Applescript instructions will be generated and stored in a list.
+    applescript = []
+
+    for num, window in enumerate(teamocil_config['windows']):
+        if num > 0:
+            applescript.append("create window with default profile")
+        base_command = []
+
+        # Extract layout format, if given.
+        if "layout" in window:
+            layout = window['layout']
+        else:
+            layout = "tiled"
+
+        # Extract starting directory for panes in this window, if given.
+        if 'root' in window:
+            base_command.append('cd {path}'.format(path=window['root']))
+
+        # Generate Applescript to lay the panes out and then add to our
+        # Applescript commands to run.
+        pane_applescript = create_panes_applescript(len(window['panes']), layout)
+        applescript.extend(pane_applescript)
+
+        if 'panes' in window:
+
+            for pane_num, pane in enumerate(window['panes'], start=1):
+                # pane_commands stores commands we need to run to
+                # navigate to the correct directory, and to run the
+                # given commands
+                pane_commands = []
+                pane_commands.extend(base_command)
+
+                # pane entries may be lists of multiple commands
+                if isinstance(pane, dict):
+                    if 'commands' in pane:
+                        for command in pane['commands']:
+                            pane_commands.append(command)
+                else:
+                    pane_commands.append(pane)
+
+                applescript_for_pane = ['write text "{command}"'
+                                        .format(command=";".join(pane_commands))]
+
+                # If the window had a name, add command to set that up.
+                if 'name' in window:
+                    applescript_for_pane.append('set name to "{name}"'
+                                                .format(name=window['name']))
+
+                applescript.append(applescript_to_pane(pane_num, applescript_for_pane))
+
+        return applescript
+
+
+def run_applescript(ascript, **kwargs):
+    """ Run the given AppleScript and return the
+    standard output and error.
+    """
+
+    osa = subprocess.Popen(['osascript', '-'],
+                           stdin=subprocess.PIPE,
+                           stdout=subprocess.PIPE)
+
+    parsed_script = ascript % kwargs
+
+    return osa.communicate(parsed_script)[0]
+
+teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
+
+if args.layout:
+    filepath = os.path.join(os.getcwd(), args.teamocil_layout)
+else:
+    filepath = os.path.join(teamocil_dir, args.teamocil_layout + ".yml")
+
+if not os.path.isfile(filepath):
+    print "ERROR: There is no file at: " + filepath
+    exit(1)
+
+if args.show:
+    with open(filepath, 'r') as fin:
+        print fin.read()
+        exit(0)
+
+if args.edit:
+    editor = os.getenv('EDITOR')
+    if editor:
+        os.system('%s %s' % (editor, filepath))
+        exit(0)
+    else:
+        print "ERROR: No editor set in $EDITOR"
+        exit(1)
+
+applescript = ['tell application "iTerm"']
+applescript.append('activate')
+if not args.here:
+    applescript.append("create window with default profile")
+applescript.extend(process_teamocil_file(filepath))
+applescript.append('end tell')
+
+run_applescript("\n".join(applescript))

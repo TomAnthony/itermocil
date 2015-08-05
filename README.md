@@ -10,11 +10,6 @@ iTermocil is inspired by and compatible with [teamocil](https://github.com/remip
 # Install the `iTermocil` via Homebrew
 $ brew install itermocil
 
-# OR
-
-# Install the `iTermocil` via pip
-$ pip install itermocil
-
 # Create your layout directory
 $ mkdir ~/.teamocil
 
@@ -202,12 +197,12 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 ## To Do
 
-- teamocil's focus' is not yet supported ('select' works on 2.9 to do this with)
-- add a command line flag for tabs vs windows for new teamocil 'windows'
-- test with current iTerm (I'm on 2.9 beta version)
+- ~~add a command line flag for tabs vs windows for new teamocil 'windows'~~
+- more testing
 - teamocil's --list option
 - if $EDITOR is empty, try the 'open' command (we know we are Mac based)
-- make it so .itermocil also works if desired
+- ~~make it so .itermocil also works if desired~~
+- add note about iterm versions
 
 ## License
 

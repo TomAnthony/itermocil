@@ -37,6 +37,7 @@ class itermocil(object):
             if self.new_iterm:
                 self.applescript.append('create window with default profile')
             else:
+                self.applescript.append('delay 0.3')
                 self.applescript.append('tell i term application "System Events" ' +
                                         'to keystroke "n" using command down')
 
@@ -225,7 +226,7 @@ class itermocil(object):
         # This is all keystroke based and thus takes a moment to happen,
         # so unfortunately (for old iTerm) we have to wait a moment to
         # give all that time to happen.
-        self.applescript.append('delay 3')
+        self.applescript.append('delay 1')
 
     def initiate_pane(self, pane, commands="", name=None):
         """ Once we have layed out the panes we need, we can now navigate
@@ -267,6 +268,25 @@ class itermocil(object):
                 end tell
             '''.format(tell_target=tell_target, command=command, name=name_command))
 
+    def focus_on_pane(self, pane):
+        """ Switch focus to the specified pane.
+        """
+
+        if not pane:
+            return
+
+        # Determine the correct target for Applescript's 'tell' command
+        # based upon iTerm version.
+        if self.new_iterm:
+            self.applescript.append(''' tell pane_{pane}
+                                        select
+                                    end tell
+                                '''.format(pane=pane))
+        else:
+            for i in range(1, pane):
+                self.applescript.append('tell i term application "System Events" ' +
+                                        'to keystroke "]" using command down')
+
     def process_file(self):
         """ Parse the named teamocil file, generate Applescript to send to
             iTerm2 to generate panes, name them and run the specified commands
@@ -301,6 +321,7 @@ class itermocil(object):
 
             if 'panes' in window:
 
+                focus_pane = None
                 for pane_num, pane in enumerate(window['panes'], start=1):
                     # each pane needs the base_command to navigate to
                     # the correct directory
@@ -312,6 +333,8 @@ class itermocil(object):
                         if 'commands' in pane:
                             for command in pane['commands']:
                                 pane_commands.append(command)
+                        if 'commands' in pane:
+                            focus_pane = pane_num
                     else:
                         pane_commands.append(pane)
 
@@ -321,3 +344,5 @@ class itermocil(object):
                         window_name = window['name']
 
                     self.initiate_pane(pane_num, pane_commands, window_name)
+
+                self.focus_on_pane(focus_pane)

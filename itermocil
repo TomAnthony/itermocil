@@ -7,6 +7,8 @@ import re
 
 from itermocil import itermocil
 
+__version__ = '0.1.0'
+
 parser = argparse.ArgumentParser(
     description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
     usage='%(prog)s [options] <layout>'
@@ -44,6 +46,11 @@ parser.add_argument("--list",
                     action="store_true",
                     default=False)
 
+parser.add_argument("--version",
+                    help="show iTermocil version",
+                    action="store_true",
+                    default=None)
+
 parser.add_argument("--debug",
                     help="show the Applescript built to configure iTerm rather than running it",
                     action="store_true",
@@ -53,6 +60,11 @@ args = parser.parse_args()
 
 # teamocil files live in a hidden directory in the home directory
 teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
+
+# If --version then show the version number
+if args.version:
+    print __version__
+    exit(0)
 
 # If --list then show the layout names in ~./teamocil
 if args.list:

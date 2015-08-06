@@ -4,6 +4,8 @@ iTermocil allows you setup pre-configured layouts of windows and panes in [iTerm
 
 iTermocil is inspired by and compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency.
 
+If you are using the iTerm 2.9 beta then see then notes section below.
+
 ## Installing iTermocil
 
 ```bash
@@ -23,7 +25,7 @@ $ itermocil sample
 ## Using iTermocil
 
 ```bash
-$ itermocil [options] [layout-name]
+$ itermocil [options] <layout-name>
 ```
 
 iTermocil is compatible with all of teamocil's flags, and they all work in the same way.
@@ -191,13 +193,15 @@ I found that I primarily used tmux for the ability to have teamocil files for my
 
 My team all use teamocil, and I had a bunch of teamocil files already, so I wrote iTermocil to enable me to keep using these files within iTerm itself.
 
-# Notes
+## Notes
 
 Teamocil allows supplying a name for a tmux session which has no purpose in iTerm, and so that option is ignored.
 
 In tmux it is 'windows' that have names, whereas in iTerm each pane in a window can have a name. iTermocil will name all the child panes of a window by the window name given in a termocil file.
 
-iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+.
+iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+. If using beta builds should grab the [latest nightly](https://iterm2.com/nightly/latest), the 2.9.20150626 build does not have the required script hooks for iTermocil to work (and I have no plans to kludge something just for an incomplete beta).
+
+The only limitation on pre 2.9 iTerm is currently you cannot have teamocil 'windows' open in tabs, you can open with '--here' or the 'window' will open in a new iTerm window. I cannot find a scripting solution to work around this limitation currently.
 
 ## Thanks
 
@@ -206,8 +210,8 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 ## To Do
 
 - possibly add a flag for using windows instead of tabs for new teamocil 'windows'
+- iTerm < 2.9 currently only works when opening new 'windows' (--here works though), iTerm betas open in tabs by default
 - pane 'focus' is supported, but window 'focus' is not yet
-- more testing
 
 ## License
 

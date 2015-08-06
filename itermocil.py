@@ -7,7 +7,7 @@ from math import ceil
 class itermocil(object):
     """ Read the teamocil file and build an Applescript that will configure
         iTerm into the correct layout. Uses an Applescript to establish
-        which version of iTerm is being used and supplies different 
+        which version of iTerm is being used and supplies different
         Applescript based upon that.
     """
 
@@ -21,6 +21,16 @@ class itermocil(object):
         self.new_iterm = True
         if major_version < 2.9:
             self.new_iterm = False
+        else:
+            # Temporary check to check for unsupported versionf of iTerm beta
+            v = self.get_version_string()
+            bits = v.split('.')
+            build = bits[2].replace('-nightly', '')
+            if (int(build) < 20150805):
+                print "This is an unsupported beta build of iTerm."
+                print "Try the latest nightly, or the 2.1.1 stable build."
+                print "See Readme notes for more info. Sorry!"
+                exit(1)
 
         # Initiate from arguments
         self.file = teamocil_file
@@ -42,7 +52,8 @@ class itermocil(object):
             else:
                 self.applescript.append('delay 0.3')
                 self.applescript.append('tell i term application "System Events" ' +
-                                        'to keystroke "t" using command down')
+                                        'to keystroke "n" using command down')
+                self.applescript.append('delay 0.3')
 
         # Process the file, building the script.
         self.process_file()
@@ -50,7 +61,7 @@ class itermocil(object):
         # Finish the script
         self.applescript.append('end tell')
 
-    def get_major_version(self):
+    def get_version_string(self):
         """ Get version of iTerm. 'iTerm2' (iTerm 2.9+) has much improved
             Applescript support and options, so is more robust.
         """
@@ -61,6 +72,15 @@ class itermocil(object):
 
         version_script = 'set iterm_version to (get version of application "iTerm")'
         v = osa.communicate(version_script)[0]
+
+        return v.strip()
+
+    def get_major_version(self):
+        """ Get version of iTerm. 'iTerm2' (iTerm 2.9+) has much improved
+            Applescript support and options, so is more robust.
+        """
+
+        v = self.get_version_string()
 
         return float(v[:3])
 
@@ -229,7 +249,7 @@ class itermocil(object):
         # This is all keystroke based and thus takes a moment to happen,
         # so unfortunately (for old iTerm) we have to wait a moment to
         # give all that time to happen.
-        self.applescript.append('delay 1')
+        self.applescript.append('delay 2')
 
     def initiate_pane(self, pane, commands="", name=None):
         """ Once we have layed out the panes we need, we can now navigate
@@ -310,7 +330,8 @@ class itermocil(object):
                 else:
                     self.applescript.append('delay 0.3')
                     self.applescript.append('tell i term application "System Events" ' +
-                                            'to keystroke "t" using command down')
+                                            'to keystroke "n" using command down')
+                    self.applescript.append('delay 0.3')
 
             base_command = []
 

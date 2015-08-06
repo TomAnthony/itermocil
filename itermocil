@@ -80,6 +80,8 @@ if not args.teamocil_layout:
     parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
 else:
     layout = args.teamocil_layout[0]
+    # Sanitize input
+    layout = re.sub("[\*\?\[\]\'\"\\\$\;\&\(\)\|\^\<\>]", "", layout)
 
 # Build teamocil file path basec on presence of --layout flag.
 if args.layout:
@@ -94,7 +96,7 @@ else:
 if args.edit:
     editor = os.getenv('EDITOR')
     if not os.path.isfile(filepath):
-        os.mknod(filepath, mode=0640)
+        subprocess.call(['touch', filepath])
     if editor:
         os.system('%s %s' % (editor, filepath))
     else:

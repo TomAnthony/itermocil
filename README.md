@@ -10,7 +10,7 @@ If you are using the iTerm 2.9 beta then see then notes section below.
 
 ```bash
 # Install the `iTermocil` via Homebrew
-$ brew install itermocil
+$ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory
 $ mkdir ~/.teamocil

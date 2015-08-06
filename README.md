@@ -16,7 +16,7 @@ $ brew install TomAnthony/brews/itermocil
 $ mkdir ~/.teamocil
 
 # Edit ~/.teamocil/sample.yml (look for sample layouts in this very `README.md`)
-$ teamocil --edit sample
+$ itermocil --edit sample
 
 # Run your newly-created sample layout
 $ itermocil sample

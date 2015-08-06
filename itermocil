@@ -7,7 +7,7 @@ import re
 
 from itermocil import itermocil
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 parser = argparse.ArgumentParser(
     description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
@@ -68,6 +68,9 @@ if args.version:
 
 # If --list then show the layout names in ~./teamocil
 if args.list:
+    if not os.path.isdir(teamocil_dir):
+        print "ERROR: No ~/.teamocil directory"
+        exit(1)
     for file in os.listdir(teamocil_dir):
         if file.endswith(".yml"):
             print(file[:-4])
@@ -82,7 +85,22 @@ else:
 if args.layout:
     filepath = os.path.join(os.getcwd(), layout)
 else:
+    if not os.path.isdir(teamocil_dir):
+        print "ERROR: No ~/.teamocil directory"
+        exit(1)
     filepath = os.path.join(teamocil_dir, layout + ".yml")
+
+# If --edit the try to launch editor and exit
+if args.edit:
+    editor = os.getenv('EDITOR')
+    if not os.path.isfile(filepath):
+        os.mknod(filepath, mode=0640)
+    if editor:
+        os.system('%s %s' % (editor, filepath))
+    else:
+        subprocess.Popen("open " + filepath, shell=True)
+
+    exit(0)
 
 # Check teamocil file exists
 if not os.path.isfile(filepath):
@@ -94,17 +112,6 @@ if args.show:
     with open(filepath, 'r') as fin:
         print fin.read()
         exit(0)
-
-# If --edit the try to launch editor and exit
-if args.edit:
-    editor = os.getenv('EDITOR')
-
-    if editor:
-        os.system('%s %s' % (editor, filepath))
-    else:
-        subprocess.Popen("open " + filepath, shell=True)
-
-    exit(0)
 
 # Parse the teamocil file and execute it.
 instance = itermocil(filepath, here=args.here)

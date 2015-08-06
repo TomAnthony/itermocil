@@ -76,6 +76,8 @@ treat it as a single-command pane.
 
 ## Examples
 
+These examples are all borrowed from teamocil's documentation, to highlight the compatibility.
+
 ### Simple two pane window
 
 ```yaml

@@ -83,7 +83,7 @@ else:
     # Sanitize input
     layout = re.sub("[\*\?\[\]\'\"\\\$\;\&\(\)\|\^\<\>]", "", layout)
 
-# Build teamocil file path basec on presence of --layout flag.
+# Build teamocil file path based on presence of --layout flag.
 if args.layout:
     filepath = os.path.join(os.getcwd(), layout)
 else:

@@ -9,7 +9,7 @@ If you are using the iTerm 2.9 beta then see then notes section below.
 ## Installing iTermocil
 
 ```bash
-# Install the `iTermocil` via Homebrew
+# Install `itermocil` via Homebrew
 $ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory

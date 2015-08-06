@@ -1,15 +1,21 @@
 #!/usr/bin/python
 
+import subprocess
 import argparse
 import os
+import re
 
 from itermocil import itermocil
 
-parser = argparse.ArgumentParser(description='Process a teamocil file in iTerm2 without tmux.')
+parser = argparse.ArgumentParser(
+    description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
+    usage='%(prog)s [options] <layout>'
+    )
 
 parser.add_argument("teamocil_layout",
                     help="the teamocil layout you wish to process",
-                    metavar="layout_name")
+                    metavar="layout",
+                    nargs="*")
 
 # teamocil compatible flags:
 
@@ -19,7 +25,7 @@ parser.add_argument("--here",
                     default=False)
 
 parser.add_argument("--edit",
-                    help="edit file in $EDITOR",
+                    help="edit file in $EDITOR if set, otherwise open in GUI",
                     action="store_true",
                     default=False)
 
@@ -33,9 +39,12 @@ parser.add_argument("--layout",
                     action="store_true",
                     default=None)
 
-# iTermocil flags
+parser.add_argument("--list",
+                    help="show the available layouts in ~/teamocil",
+                    action="store_true",
+                    default=False)
 
-parser.add_argument("--showscript",
+parser.add_argument("--debug",
                     help="show the Applescript built to configure iTerm rather than running it",
                     action="store_true",
                     default=None)
@@ -45,11 +54,23 @@ args = parser.parse_args()
 # teamocil files live in a hidden directory in the home directory
 teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
 
+# If --list then show the layout names in ~./teamocil
+if args.list:
+    for file in os.listdir(teamocil_dir):
+        if file.endswith(".yml"):
+            print(file[:-4])
+    exit(0)
+
+if not args.teamocil_layout:
+    parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
+else:
+    layout = args.teamocil_layout[0]
+
 # Build teamocil file path basec on presence of --layout flag.
 if args.layout:
-    filepath = os.path.join(os.getcwd(), args.teamocil_layout)
+    filepath = os.path.join(os.getcwd(), layout)
 else:
-    filepath = os.path.join(teamocil_dir, args.teamocil_layout + ".yml")
+    filepath = os.path.join(teamocil_dir, layout + ".yml")
 
 # Check teamocil file exists
 if not os.path.isfile(filepath):
@@ -65,17 +86,39 @@ if args.show:
 # If --edit the try to launch editor and exit
 if args.edit:
     editor = os.getenv('EDITOR')
+
     if editor:
         os.system('%s %s' % (editor, filepath))
-        exit(0)
     else:
-        print "ERROR: No editor set in $EDITOR"
-        exit(1)
+        subprocess.Popen("open " + filepath, shell=True)
+
+    exit(0)
 
 # Parse the teamocil file and execute it.
 instance = itermocil(filepath, here=args.here)
 
-if args.showscript:
-    print instance.script()
+# If --debug then output the applescript. Do some rough'n'ready
+# formatting on it.
+if args.debug:
+
+    script = instance.script()
+    script = re.sub("^(\s*)", "", script, flags=re.MULTILINE)
+
+    indent = ""
+    formatted_script = []
+
+    for line in script.split("\n"):
+        if line[:8] == "end tell":
+            indent = indent[:-1]
+        if line[:4] == "tell" and line[:7] != "tell i ":
+            formatted_script.append("")
+
+        formatted_script.append(indent + line)
+
+        if line[:4] == "tell" and line[:7] != "tell i ":
+            indent += "\t"
+
+    formatted_script.append("")
+    print "\n".join(formatted_script)
 else:
     instance.execute()

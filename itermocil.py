@@ -35,11 +35,14 @@ class itermocil(object):
         # to script.
         if not self.here:
             if self.new_iterm:
-                self.applescript.append('create window with default profile')
+                self.applescript.append('tell current window')
+                self.applescript.append('create tab with default profile')
+                self.applescript.append('end tell')
+                # self.applescript.append('create window with default profile')
             else:
                 self.applescript.append('delay 0.3')
                 self.applescript.append('tell i term application "System Events" ' +
-                                        'to keystroke "n" using command down')
+                                        'to keystroke "t" using command down')
 
         # Process the file, building the script.
         self.process_file()
@@ -299,7 +302,16 @@ class itermocil(object):
 
         for num, window in enumerate(teamocil_config['windows']):
             if num > 0:
-                self.applescript.append("create window with default profile")
+                if self.new_iterm:
+                    self.applescript.append('tell current window')
+                    self.applescript.append('create tab with default profile')
+                    self.applescript.append('end tell')
+                    # self.applescript.append('create window with default profile')
+                else:
+                    self.applescript.append('delay 0.3')
+                    self.applescript.append('tell i term application "System Events" ' +
+                                            'to keystroke "t" using command down')
+
             base_command = []
 
             # Extract layout format, if given.

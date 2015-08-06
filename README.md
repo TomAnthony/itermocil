@@ -1,8 +1,8 @@
 ## Introduction
 
-iTermocil allows you open pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files.
+iTermocil allows you setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files.
 
-iTermocil is inspired by and compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux.
+iTermocil is inspired by and compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency.
 
 ## Installing iTermocil
 
@@ -49,18 +49,18 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 
 | Key       | Description
 |-----------|----------------------------
-| `name`    | The tmux session name
+| `name`    | This is currently ignored in iTermocil as there is no tmux session.
 | `windows` | An `Array` of windows
 
 ### Windows
 
 | Key      | Description
 |----------|----------------------------
-| `name`   | The tmux window name
+| `name`   | All iTerm panes in this window will be given this name.
 | `root`   | The path where all panes in the window will be started
-| `layout` | The layout that will be set after all panes are created by Teamocil
+| `layout` | The layout format that iTermocil will use (see below)
 | `panes`  | An `Array` of panes
-| `focus`  | If set to `true`, the window will be selected after the layout has been executed
+| `focus`  | This is currently unsupported in iTermocil
 
 ### Panes
 
@@ -189,7 +189,15 @@ windows:
 
 I found that I primarily used tmux for the ability to have teamocil files for my projects, and to be able to zoom in to certain panes. I was never using tmux over SSH and I rarely detached from sessions locally. So everything I was doing I could do natively in iTerm2 other than opening the pre-configured sessions.
 
-My team all use teamocil, and I had a bunch of teamocil files already, so I wrote iTermocil to enable be to keep using these files within iTerm itself.
+My team all use teamocil, and I had a bunch of teamocil files already, so I wrote iTermocil to enable me to keep using these files within iTerm itself.
+
+# Notes
+
+Teamocil allows supplying a name for a tmux session which has no purpose in iTerm, and so that option is ignored.
+
+In tmux it is 'windows' that have names, whereas in iTerm each pane in a window can have a name. iTermocil will name all the child panes of a window by the window name given in a termocil file.
+
+iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+.
 
 ## Thanks
 
@@ -197,12 +205,9 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 ## To Do
 
-- ~~add a command line flag for tabs vs windows for new teamocil 'windows'~~
+- possibly add a flag for using windows instead of tabs for new teamocil 'windows'
+- pane 'focus' is supported, but window 'focus' is not yet
 - more testing
-- teamocil's --list option
-- if $EDITOR is empty, try the 'open' command (we know we are Mac based)
-- ~~make it so .itermocil also works if desired~~
-- add note about iterm versions
 
 ## License
 

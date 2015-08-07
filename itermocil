@@ -100,7 +100,7 @@ if args.edit:
     else:
         if not os.path.isfile(filepath):
             subprocess.call(['touch', filepath])
-        subprocess.Popen("open " + filepath, shell=True)
+        subprocess.call(['open', filepath])
 
     exit(0)
 

@@ -6,7 +6,7 @@ iTermocil is inspired by and compatible with [teamocil](https://github.com/remip
 
 If you are using the iTerm 2.9 beta then see then notes section below.
 
-![Example](https://raw.github.com/f/itermocil/master/itermocil.gif)
+![Example](https://raw.githubusercontent.com/TomAnthony/itermocil/master/itermocil.gif)
 
 ## Installing iTermocil
 

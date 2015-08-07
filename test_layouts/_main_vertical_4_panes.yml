@@ -1,0 +1,9 @@
+windows:
+  - name: _main_vertical_4_panes
+    root: ~
+    layout: main-vertical
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"
+      - echo "pane 4"

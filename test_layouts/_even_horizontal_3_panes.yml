@@ -1,0 +1,8 @@
+windows:
+  - name: _even_horizontal_3_panes
+    root: ~
+    layout: even-horizontal
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"

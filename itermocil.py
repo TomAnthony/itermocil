@@ -11,7 +11,7 @@ class itermocil(object):
         Applescript based upon that.
     """
 
-    def __init__(self, teamocil_file, here=False):
+    def __init__(self, teamocil_file, here=False, cwd=None):
         """ Establish iTerm version, and initialise the list which
             will contain all the Applescript commands to execute.
         """
@@ -35,6 +35,7 @@ class itermocil(object):
         # Initiate from arguments
         self.file = teamocil_file
         self.here = here
+        self.cwd = cwd
 
         # This will be where we build up the script.
         self.applescript = []
@@ -136,12 +137,13 @@ class itermocil(object):
                 self.applescript.append(create_pane(p-1, p, "vertical"))
 
         # 'even-vertical' layouts just split horizontally down the screen
-        if layout == 'even-vertical':
+        # 'main-horizontal' is treated equally for now - this needs to be done still
+        elif layout == 'even-vertical' or layout == 'main-horizontal':
 
             for p in range(2, num_panes+1):
                 self.applescript.append(create_pane(p-1, p, "horizontal"))
 
-        # 'main-vertical' layouts have one left pane  that is full height,
+        # 'main-vertical' layouts have one left pane that is full height,
         # and then split the remaining panes horizontally down the right
         elif layout == 'main-vertical':
 
@@ -198,7 +200,8 @@ class itermocil(object):
             self.applescript.append(prefix + 'keystroke "]" using command down')
 
         # 'even-vertical' layouts just split horizontally down the screen
-        if layout == 'even-vertical':
+        # 'main-horizontal' is treated equally for now - this needs to be done still
+        elif layout == 'even-vertical' or layout == 'main-horizontal':
 
             for p in range(2, num_panes+1):
                 self.applescript.append(prefix + 'keystroke "D" using command down')
@@ -343,7 +346,14 @@ class itermocil(object):
 
             # Extract starting directory for panes in this window, if given.
             if 'root' in window:
-                base_command.append('cd {path}'.format(path=window['root']))
+                if window['root']:
+                    base_command.append('cd \\"{path}\\"'.format(path=window['root']))
+                else:
+                    if self.here:
+                        base_command.append('cd \\"{path}\\"'.format(path=self.cwd))
+                    pass
+            else:
+                print 'no root!'
 
             # Generate Applescript to lay the panes out and then add to our
             # Applescript commands to run.
@@ -365,11 +375,13 @@ class itermocil(object):
                     if isinstance(pane, dict):
                         if 'commands' in pane:
                             for command in pane['commands']:
-                                pane_commands.append(command)
+                                escaped_command = command.replace('"', r'\"')
+                                pane_commands.append(escaped_command)
                         if 'commands' in pane:
                             focus_pane = pane_num
                     else:
-                        pane_commands.append(pane)
+                        escaped_command = pane.replace('"', r'\"')
+                        pane_commands.append(escaped_command)
 
                     # Check if windoww has a name.
                     window_name = None

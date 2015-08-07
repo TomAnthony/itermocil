@@ -1,0 +1,8 @@
+windows:
+  - name: _even_vertical_3_panes
+    root: ~
+    layout: even-vertical
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"

@@ -95,11 +95,11 @@ else:
 # If --edit the try to launch editor and exit
 if args.edit:
     editor = os.getenv('EDITOR')
-    if not os.path.isfile(filepath):
-        subprocess.call(['touch', filepath])
     if editor:
-        os.system('%s %s' % (editor, filepath))
+        subprocess.call([editor, filepath])
     else:
+        if not os.path.isfile(filepath):
+            subprocess.call(['touch', filepath])
         subprocess.Popen("open " + filepath, shell=True)
 
     exit(0)
@@ -116,7 +116,8 @@ if args.show:
         exit(0)
 
 # Parse the teamocil file and execute it.
-instance = itermocil(filepath, here=args.here)
+cwd = os.getcwd()
+instance = itermocil(filepath, here=args.here, cwd=cwd)
 
 # If --debug then output the applescript. Do some rough'n'ready
 # formatting on it.

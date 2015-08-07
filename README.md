@@ -203,7 +203,7 @@ In tmux it is 'windows' that have names, whereas in iTerm each pane in a window 
 
 iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+. If using beta builds should grab the [latest nightly](https://iterm2.com/nightly/latest), the 2.9.20150626 build does not have the required script hooks for iTermocil to work (and I have no plans to kludge something just for an incomplete beta).
 
-The only limitation on pre 2.9 iTerm is currently you cannot have teamocil 'windows' open in tabs, you can open with '--here' or the 'window' will open in a new iTerm window. I cannot find a scripting solution to work around this limitation currently.
+~The only limitation on pre 2.9 iTerm is currently you cannot have the initial teamocil 'window' open in a tab, you can open with '--here' or the first 'window' will open in a new iTerm window. Subsequent 'windows' will open in tabs in that new window. I cannot find a scripting solution to work around this limitation currently.~ This now works. :)
 
 ## Thanks
 

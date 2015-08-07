@@ -53,7 +53,7 @@ class itermocil(object):
             else:
                 self.applescript.append('delay 0.3')
                 self.applescript.append('tell i term application "System Events" ' +
-                                        'to keystroke "n" using command down')
+                                        'to keystroke "t" using command down')
                 self.applescript.append('delay 0.3')
 
         # Process the file, building the script.
@@ -84,6 +84,23 @@ class itermocil(object):
         v = self.get_version_string()
 
         return float(v[:3])
+
+    def get_num_panes_in_current_window(self):
+        """ Get the number of panes already existing in the current window.
+            This is used only for old iTerm.
+        """
+
+        osa = subprocess.Popen(['osascript', '-'],
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE)
+
+        panes_script = """ tell application "iTerm"
+                               count sessions of current terminal
+                           end tell
+                       """
+        num = osa.communicate(panes_script)[0]
+
+        return num.strip()
 
     def execute(self):
         """ Execute the Applescript built by parsing the teamocil file.
@@ -265,7 +282,7 @@ class itermocil(object):
              1: "first",       2: "second",       3: "third",
              4: "fourth",      5: "fifth",        6: "sixth",
              7: "seventh",     8: "eighth",       9: "ninth",
-            10: "tenth",      11: "eleventh",    12: "twelth",
+            10: "tenth",      11: "eleventh",    12: "twelfth",
             13: "thirteenth", 14: "fourteenth",  15: "fifteenth",
             16: "sixteenth",  17: "seventeenth", 18: "eighteenth",
             19: "nineteenth", 20: "twentieth",   21: "twentyfirst"
@@ -301,6 +318,10 @@ class itermocil(object):
         if not pane:
             return
 
+        if not self.new_iterm:
+            if not self.here:
+                pane -= 1
+
         # Determine the correct target for Applescript's 'tell' command
         # based upon iTerm version.
         if self.new_iterm:
@@ -323,6 +344,15 @@ class itermocil(object):
         with open(self.file, 'r') as f:
             teamocil_config = yaml.load(f)
 
+        # total_pane_count is only used for old iTerm, and is needed to
+        # reference panes created in later windows
+        if self.new_iterm:
+            total_pane_count = 0
+        else:
+            total_pane_count = int(self.get_num_panes_in_current_window())
+            if self.here:
+                total_pane_count -= 1
+
         for num, window in enumerate(teamocil_config['windows']):
             if num > 0:
                 if self.new_iterm:
@@ -333,7 +363,7 @@ class itermocil(object):
                 else:
                     self.applescript.append('delay 0.3')
                     self.applescript.append('tell i term application "System Events" ' +
-                                            'to keystroke "n" using command down')
+                                            'to keystroke "t" using command down')
                     self.applescript.append('delay 0.3')
 
             base_command = []
@@ -365,7 +395,14 @@ class itermocil(object):
             if 'panes' in window:
 
                 focus_pane = None
-                for pane_num, pane in enumerate(window['panes'], start=1):
+                if self.new_iterm:
+                    start_pane = 1
+                else:
+                    start_pane = total_pane_count + 1
+
+                for pane_num, pane in enumerate(window['panes'], start=start_pane):
+                    total_pane_count += 1
+
                     # each pane needs the base_command to navigate to
                     # the correct directory
                     pane_commands = []

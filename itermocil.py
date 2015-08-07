@@ -1,10 +1,11 @@
 import subprocess
 import yaml
+import sys
 
 from math import ceil
 
 
-class itermocil(object):
+class Itermocil(object):
     """ Read the teamocil file and build an Applescript that will configure
         iTerm into the correct layout. Uses an Applescript to establish
         which version of iTerm is being used and supplies different
@@ -19,7 +20,8 @@ class itermocil(object):
         # Check whether we are old or new iTerm (pre/post 2.9)
         major_version = self.get_major_version()
         self.new_iterm = True
-        if major_version < 2.9:
+
+        if tuple(int(n) for n in str(major_version).split(".")) < (2, 9):
             self.new_iterm = False
         else:
             # Temporary check to check for unsupported versionf of iTerm beta
@@ -30,12 +32,23 @@ class itermocil(object):
                 print "This is an unsupported beta build of iTerm."
                 print "Try the latest nightly, or the 2.1.1 stable build."
                 print "See Readme notes for more info. Sorry!"
-                exit(1)
+                sys.exit(1)
 
         # Initiate from arguments
         self.file = teamocil_file
         self.here = here
         self.cwd = cwd
+
+        # Old iTerm requirs referencing panes in this format!
+        self.nth = {
+             1: "first",       2: "second",       3: "third",
+             4: "fourth",      5: "fifth",        6: "sixth",
+             7: "seventh",     8: "eighth",       9: "ninth",
+            10: "tenth",      11: "eleventh",    12: "twelfth",
+            13: "thirteenth", 14: "fourteenth",  15: "fifteenth",
+            16: "sixteenth",  17: "seventeenth", 18: "eighteenth",
+            19: "nineteenth", 20: "twentieth",   21: "twentyfirst"
+        }
 
         # This will be where we build up the script.
         self.applescript = []
@@ -203,9 +216,8 @@ class itermocil(object):
         prefix = 'tell i term application "System Events" to '
 
         # teamocil seems to treat the first 2 tiles of a tiled layout like this
-        if num_panes == 2:
-            if layout == 'tiled':
-                layout = 'even-vertical'
+        if num_panes == 2 and layout == 'tiled':
+            layout = 'even-vertical'
 
         # 'even-horizontal' layouts just split vertically across the screen
         if layout == 'even-horizontal':
@@ -277,23 +289,12 @@ class itermocil(object):
             commands for each pane.
         """
 
-        # Old iTerm requirs referencing panes in this format!
-        nth = {
-             1: "first",       2: "second",       3: "third",
-             4: "fourth",      5: "fifth",        6: "sixth",
-             7: "seventh",     8: "eighth",       9: "ninth",
-            10: "tenth",      11: "eleventh",    12: "twelfth",
-            13: "thirteenth", 14: "fourteenth",  15: "fifteenth",
-            16: "sixteenth",  17: "seventeenth", 18: "eighteenth",
-            19: "nineteenth", 20: "twentieth",   21: "twentyfirst"
-        }
-
         # Determine the correct target for Applescript's 'tell' command
         # based upon iTerm version.
         if self.new_iterm:
             tell_target = 'pane_%s' % pane
         else:
-            tell_target = nth[pane] + ' session of current terminal'
+            tell_target = self.nth[pane] + ' session of current terminal'
 
         # Setting the pane name is mercifully the same across both
         # iTerm versions.
@@ -318,9 +319,8 @@ class itermocil(object):
         if not pane:
             return
 
-        if not self.new_iterm:
-            if not self.here:
-                pane -= 1
+        if not self.new_iterm and not self.here:
+            pane -= 1
 
         # Determine the correct target for Applescript's 'tell' command
         # based upon iTerm version.

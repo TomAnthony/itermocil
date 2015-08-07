@@ -2,10 +2,11 @@
 
 import subprocess
 import argparse
+import sys
 import os
 import re
 
-from itermocil import itermocil
+from itermocil import Itermocil
 
 __version__ = '0.1.3'
 
@@ -64,17 +65,17 @@ teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
 # If --version then show the version number
 if args.version:
     print __version__
-    exit(0)
+    sys.exit(0)
 
 # If --list then show the layout names in ~./teamocil
 if args.list:
     if not os.path.isdir(teamocil_dir):
         print "ERROR: No ~/.teamocil directory"
-        exit(1)
+        sys.exit(1)
     for file in os.listdir(teamocil_dir):
         if file.endswith(".yml"):
             print(file[:-4])
-    exit(0)
+    sys.exit(0)
 
 if not args.teamocil_layout:
     parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
@@ -89,7 +90,7 @@ if args.layout:
 else:
     if not os.path.isdir(teamocil_dir):
         print "ERROR: No ~/.teamocil directory"
-        exit(1)
+        sys.exit(1)
     filepath = os.path.join(teamocil_dir, layout + ".yml")
 
 # If --edit the try to launch editor and exit
@@ -102,22 +103,22 @@ if args.edit:
             subprocess.call(['touch', filepath])
         subprocess.call(['open', filepath])
 
-    exit(0)
+    sys.exit(0)
 
 # Check teamocil file exists
 if not os.path.isfile(filepath):
     print "ERROR: There is no file at: " + filepath
-    exit(1)
+    sys.exit(1)
 
 # If --show then output and exit()
 if args.show:
     with open(filepath, 'r') as fin:
         print fin.read()
-        exit(0)
+        sys.exit(0)
 
 # Parse the teamocil file and execute it.
 cwd = os.getcwd()
-instance = itermocil(filepath, here=args.here, cwd=cwd)
+instance = Itermocil(filepath, here=args.here, cwd=cwd)
 
 # If --debug then output the applescript. Do some rough'n'ready
 # formatting on it.

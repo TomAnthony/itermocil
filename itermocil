@@ -7,7 +7,7 @@ import re
 
 from itermocil import itermocil
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 parser = argparse.ArgumentParser(
     description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',

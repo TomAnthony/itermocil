@@ -377,10 +377,12 @@ class itermocil(object):
             # Extract starting directory for panes in this window, if given.
             if 'root' in window:
                 if window['root']:
-                    base_command.append('cd \\"{path}\\"'.format(path=window['root']))
+                    parsed_path = window['root'].replace(" ", "\\\ ")
+                    base_command.append('cd {path}'.format(path=parsed_path))
                 else:
                     if self.here:
-                        base_command.append('cd \\"{path}\\"'.format(path=self.cwd))
+                        parsed_path = self.cwd.replace(" ", "\\\ ")
+                        base_command.append('cd {path}'.format(path=parsed_path))
                     pass
             else:
                 print 'no root!'

@@ -6,6 +6,8 @@ iTermocil is inspired by and compatible with [teamocil](https://github.com/remip
 
 If you are using the iTerm 2.9 beta then see then notes section below.
 
+![Example](https://raw.github.com/f/itermocil/master/itermocil.gif)
+
 ## Installing iTermocil
 
 ```bash
@@ -212,7 +214,7 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 ## To Do
 
 - possibly add a flag for using windows instead of tabs for new teamocil 'windows'
-- iTerm < 2.9 currently only works when opening new 'windows' (--here works though), iTerm betas open in tabs by default
+- ~~iTerm < 2.9 currently only works when opening new 'windows' (--here works though), iTerm betas open in tabs by default~~ Fixed.
 - pane 'focus' is supported, but window 'focus' is not yet
 - add 'main-horizontal' support - it is the only layout that requires pane resizing (iTerm resizes other panes to equally space them - tmux's main-horizontal progressively halves the space so each pane is smaller)
 - with the --edit flag, if no $EDITOR is set and a new layout name is given, then an empty file is created to be opened in a GUI editor. Is there a better way to handle this?

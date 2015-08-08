@@ -167,8 +167,7 @@ class Itermocil(object):
                 self.applescript.append(create_pane(p-1, p, "vertical"))
 
         # 'even-vertical' layouts just split horizontally down the screen
-        # 'main-horizontal' is treated equally for now - this needs to be done still
-        elif layout == 'even-vertical' or layout == 'main-horizontal':
+        elif layout == 'even-vertical':
 
             for p in range(2, num_panes+1):
                 self.applescript.append(create_pane(p-1, p, "horizontal"))
@@ -181,6 +180,15 @@ class Itermocil(object):
             if num_panes > 1:
                 for p in range(3, num_panes+1):
                     self.applescript.append(create_pane(p-1, p, "horizontal"))
+
+        # 'main-horizontal' layouts have one left pane that is full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'main-horizontal':
+
+            self.applescript.append(create_pane(1, 2, "horizontal"))
+            if num_panes > 1:
+                for p in range(3, num_panes+1):
+                    self.applescript.append(create_pane(p-1, p, "vertical"))
 
         # 'tiled' layouts create 2 columns and then however many rows as
         # needed. If there are odd number of panes then the bottom pane
@@ -229,8 +237,7 @@ class Itermocil(object):
             self.applescript.append(prefix + 'keystroke "]" using command down')
 
         # 'even-vertical' layouts just split horizontally down the screen
-        # 'main-horizontal' is treated equally for now - this needs to be done still
-        elif layout == 'even-vertical' or layout == 'main-horizontal':
+        elif layout == 'even-vertical':
 
             for p in range(2, num_panes+1):
                 self.applescript.append(prefix + 'keystroke "D" using command down')
@@ -246,6 +253,18 @@ class Itermocil(object):
             if num_panes > 1:
                 for p in range(3, num_panes+1):
                     self.applescript.append(prefix + 'keystroke "D" using command down')
+
+            # Focus back on the first pane
+            self.applescript.append(prefix + 'keystroke "]" using command down')
+
+        # 'main-horizontal' layouts have one left pane  that is full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'main-horizontal':
+
+            self.applescript.append(prefix + 'keystroke "D" using command down')
+            if num_panes > 1:
+                for p in range(3, num_panes+1):
+                    self.applescript.append(prefix + 'keystroke "d" using command down')
 
             # Focus back on the first pane
             self.applescript.append(prefix + 'keystroke "]" using command down')

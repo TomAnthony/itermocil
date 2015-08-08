@@ -203,7 +203,7 @@ Teamocil allows supplying a name for a tmux session which has no purpose in iTer
 
 In tmux it is 'windows' that have names, whereas in iTerm each pane in a window can have a name. iTermocil will name all the child panes of a window by the window name given in a termocil file.
 
-iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+. If using beta builds should grab the [latest nightly](https://iterm2.com/nightly/latest), the 2.9.20150626 build does not have the required script hooks for iTermocil to work (and I have no plans to kludge something just for an incomplete beta).
+iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+. If using beta builds you should grab the [latest nightly](https://iterm2.com/nightly/latest), as the 2.9.20150626 'recommended beta' build does not have the required script hooks for iTermocil to work (and I have no plans to kludge something just for an incomplete beta that will never be released).
 
 ~~The only limitation on pre 2.9 iTerm is currently you cannot have the initial teamocil 'window' open in a tab, you can open with '--here' or the first 'window' will open in a new iTerm window. Subsequent 'windows' will open in tabs in that new window. I cannot find a scripting solution to work around this limitation currently.~~ This now works. :)
 
@@ -216,7 +216,7 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 - possibly add a flag for using windows instead of tabs for new teamocil 'windows'
 - ~~iTerm < 2.9 currently only works when opening new 'windows' (--here works though), iTerm betas open in tabs by default~~ Fixed.
 - pane 'focus' is supported, but window 'focus' is not yet
-- add 'main-horizontal' support - it is the only layout that requires pane resizing (iTerm resizes other panes to equally space them - tmux's main-horizontal progressively halves the space so each pane is smaller)
+- ~~add 'main-horizontal' support is not done~~ This is working - I'd misunderstood it initially.
 - with the --edit flag, if no $EDITOR is set and a new layout name is given, then an empty file is created to be opened in a GUI editor. Is there a better way to handle this?
 
 ## License

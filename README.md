@@ -4,8 +4,6 @@ iTermocil allows you setup pre-configured layouts of windows and panes in [iTerm
 
 iTermocil is inspired by and compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency.
 
-If you are using the iTerm 2.9 beta then see then notes section below.
-
 ![Example](https://raw.githubusercontent.com/TomAnthony/itermocil/master/itermocil.gif)
 
 ## Installing iTermocil
@@ -210,6 +208,15 @@ iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta
 ## Thanks
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
+
+## Feedback
+
+I'd love any ideas/feedback/thoughts, please:
+
+	- create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a PR
+	- hit me up on [twitter](https://twitter.com/tomanthonyseo)
+	- open [an issue](https://github.com/TomAnthony/itermocil/issues)
+	- email me at code at tomanthony.co.uk
 
 ## To Do
 

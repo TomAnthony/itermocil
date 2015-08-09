@@ -209,13 +209,13 @@ iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta
 
 ## Thanks
 
-A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), from which I have based iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
+A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 
 ## To Do
 
 - possibly add a flag for using windows instead of tabs for new teamocil 'windows'
 - ~~iTerm < 2.9 currently only works when opening new 'windows' (--here works though), iTerm betas open in tabs by default~~ Fixed.
-- pane 'focus' is supported, but window 'focus' is not yet
+- pane 'focus' is supported, but window 'focus' is not yet - I'm not sure how to focus on a certain window still
 - ~~add 'main-horizontal' support is not done~~ This is working - I'd misunderstood it initially.
 - with the --edit flag, if no $EDITOR is set and a new layout name is given, then an empty file is created to be opened in a GUI editor. Is there a better way to handle this?
 

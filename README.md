@@ -213,10 +213,10 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 I'd love any ideas/feedback/thoughts, please:
 
-	- create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a PR
-	- hit me up on [twitter](https://twitter.com/tomanthonyseo)
-	- open [an issue](https://github.com/TomAnthony/itermocil/issues)
-	- email me at code at tomanthony.co.uk
+- create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a PR
+- hit me up on [twitter](https://twitter.com/tomanthonyseo)
+- open [an issue](https://github.com/TomAnthony/itermocil/issues)
+- email me at code at tomanthony.co.uk
 
 ## To Do
 

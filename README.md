@@ -77,7 +77,7 @@ A pane can either be a `String` or a `Hash`. If it’s a `String`, Teamocil will
 
 ## Examples
 
-See examples below, or see a variety of (example layouts)[https://github.com/TomAnthony/itermocil/tree/master/test_layouts] in this repo.
+See examples below, or see a variety of [example layouts](https://github.com/TomAnthony/itermocil/tree/master/test_layouts) in this repo.
 
 ### Simple two pane window
 

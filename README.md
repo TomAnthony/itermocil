@@ -226,7 +226,7 @@ complete -c itermocil -a "(itermocil --list)"
 
 ## Contributors
 
-I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/TomAnthony/itermocil/issues) or create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a pull request, like these fine people:
+I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/TomAnthony/itermocil/issues) or create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a pull request, like these wonderful people:
 
 - [onthestairs](https://github.com/onthestairs)
 

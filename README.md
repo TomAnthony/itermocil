@@ -234,6 +234,8 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 ## To Do
 
+- add tmuxinator file support
+- add support for bespoke file format to support things like iTerm badges and tab colours
 - possibly add a flag for using windows instead of tabs for new 'windows'
 - pane 'focus' is supported, but window 'focus' is not yet - I'm not sure how to focus on a certain window still
 - with the --edit flag, if no $EDITOR is set and a new layout name is given, then an empty file is created to be opened in a GUI editor. Is there a better way to handle this? Maybe clean up blank files whenever itermocil is launched?

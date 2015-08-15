@@ -8,7 +8,7 @@ import re
 
 from itermocil import Itermocil
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 parser = argparse.ArgumentParser(
     description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
@@ -95,9 +95,12 @@ else:
 
 # If --edit the try to launch editor and exit
 if args.edit:
-    editor = os.getenv('EDITOR')
-    if editor:
-        subprocess.call([editor, filepath])
+    editor_var = os.getenv('EDITOR')
+    if editor_var:
+        import shlex
+        editor = shlex.split(editor_var)
+        editor.append(filepath)
+        subprocess.call(editor)
     else:
         if not os.path.isfile(filepath):
             subprocess.call(['touch', filepath])

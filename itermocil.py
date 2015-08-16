@@ -1,8 +1,16 @@
+#!/usr/bin/python
+
+import argparse
+import os
+import re
 import subprocess
-import yaml
 import sys
+import yaml
 
 from math import ceil
+
+
+__version__ = '0.1.5'
 
 
 class Itermocil(object):
@@ -449,3 +457,149 @@ class Itermocil(object):
                     self.initiate_pane(pane_num, pane_commands, window_name)
 
                 self.focus_on_pane(focus_pane)
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+    description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
+    usage='%(prog)s [options] <layout>'
+    )
+
+    parser.add_argument("teamocil_layout",
+                        help="the teamocil layout you wish to process",
+                        metavar="layout",
+                        nargs="*")
+
+    # teamocil compatible flags:
+
+    parser.add_argument("--here",
+                        help="run in the current terminal",
+                        action="store_true",
+                        default=False)
+
+    parser.add_argument("--edit",
+                        help="edit file in $EDITOR if set, otherwise open in GUI",
+                        action="store_true",
+                        default=False)
+
+    parser.add_argument("--show",
+                        help="show the layout instead of executing it",
+                        action="store_true",
+                        default=False)
+
+    parser.add_argument("--layout",
+                        help="use specified file rather than that in the .teamocil directory",
+                        action="store_true",
+                        default=None)
+
+    parser.add_argument("--list",
+                        help="show the available layouts in ~/teamocil",
+                        action="store_true",
+                        default=False)
+
+    parser.add_argument("--version",
+                        help="show iTermocil version",
+                        action="store_true",
+                        default=None)
+
+    parser.add_argument("--debug",
+                        help="show the Applescript built to configure iTerm rather than running it",
+                        action="store_true",
+                        default=None)
+
+    args = parser.parse_args()
+
+    # teamocil files live in a hidden directory in the home directory
+    teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
+
+    # If --version then show the version number
+    if args.version:
+        print __version__
+        sys.exit(0)
+
+    # If --list then show the layout names in ~./teamocil
+    if args.list:
+        if not os.path.isdir(teamocil_dir):
+            print "ERROR: No ~/.teamocil directory"
+            sys.exit(1)
+        for file in os.listdir(teamocil_dir):
+            if file.endswith(".yml"):
+                print(file[:-4])
+        sys.exit(0)
+
+    if not args.teamocil_layout:
+        parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
+    else:
+        layout = args.teamocil_layout[0]
+        # Sanitize input
+        layout = re.sub("[\*\?\[\]\'\"\\\$\;\&\(\)\|\^\<\>]", "", layout)
+
+    # Build teamocil file path based on presence of --layout flag.
+    if args.layout:
+        filepath = os.path.join(os.getcwd(), layout)
+    else:
+        if not os.path.isdir(teamocil_dir):
+            print "ERROR: No ~/.teamocil directory"
+            sys.exit(1)
+        filepath = os.path.join(teamocil_dir, layout + ".yml")
+
+    # If --edit the try to launch editor and exit
+    if args.edit:
+        editor_var = os.getenv('EDITOR')
+        if editor_var:
+            import shlex
+            editor = shlex.split(editor_var)
+            editor.append(filepath)
+            subprocess.call(editor)
+        else:
+            if not os.path.isfile(filepath):
+                subprocess.call(['touch', filepath])
+            subprocess.call(['open', filepath])
+
+        sys.exit(0)
+
+    # Check teamocil file exists
+    if not os.path.isfile(filepath):
+        print "ERROR: There is no file at: " + filepath
+        sys.exit(1)
+
+    # If --show then output and exit()
+    if args.show:
+        with open(filepath, 'r') as fin:
+            print fin.read()
+            sys.exit(0)
+
+    # Parse the teamocil file and execute it.
+    cwd = os.getcwd()
+    instance = Itermocil(filepath, here=args.here, cwd=cwd)
+
+    # If --debug then output the applescript. Do some rough'n'ready
+    # formatting on it.
+    if args.debug:
+
+        script = instance.script()
+        script = re.sub("^(\s*)", "", script, flags=re.MULTILINE)
+
+        indent = ""
+        formatted_script = []
+
+        for line in script.split("\n"):
+            if line[:8] == "end tell":
+                indent = indent[:-1]
+            if line[:4] == "tell" and line[:7] != "tell i ":
+                formatted_script.append("")
+
+            formatted_script.append(indent + line)
+
+            if line[:4] == "tell" and line[:7] != "tell i ":
+                indent += "\t"
+
+        formatted_script.append("")
+        print "\n".join(formatted_script)
+    else:
+        instance.execute()
+
+
+if __name__ == '__main__':
+    main()

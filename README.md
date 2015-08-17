@@ -229,6 +229,7 @@ complete -c itermocil -a "(itermocil --list)"
 I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/TomAnthony/itermocil/issues) or create a [fork](https://github.com/TomAnthony/itermocil/fork) and send a pull request, like these wonderful people:
 
 - [onthestairs](https://github.com/onthestairs)
+- [jefftriplett](https://github.com/jefftriplett)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

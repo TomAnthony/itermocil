@@ -380,6 +380,10 @@ class Itermocil(object):
             if self.here:
                 total_pane_count -= 1
 
+        if 'windows' not in teamocil_config:
+            print "ERROR: No windows defined in " + self.file
+            sys.exit(1)
+
         for num, window in enumerate(teamocil_config['windows']):
             if num > 0:
                 if self.new_iterm:
@@ -462,12 +466,12 @@ class Itermocil(object):
 def main():
 
     parser = argparse.ArgumentParser(
-    description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
-    usage='%(prog)s [options] <layout>'
+        description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
+        usage='%(prog)s [options] <layout>'
     )
 
     parser.add_argument("teamocil_layout",
-                        help="the teamocil layout you wish to process",
+                        help="the layout name you wish to process",
                         metavar="layout",
                         nargs="*")
 
@@ -489,7 +493,7 @@ def main():
                         default=False)
 
     parser.add_argument("--layout",
-                        help="use specified file rather than that in the .teamocil directory",
+                        help="specify a layout file rather looking in the ~/.teamocil",
                         action="store_true",
                         default=None)
 
@@ -504,7 +508,7 @@ def main():
                         default=None)
 
     parser.add_argument("--debug",
-                        help="show the Applescript built to configure iTerm rather than running it",
+                        help="output the iTerm Applescript instead of executing it",
                         action="store_true",
                         default=None)
 
@@ -529,7 +533,9 @@ def main():
         sys.exit(0)
 
     if not args.teamocil_layout:
-        parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
+        # parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
+        parser.print_help()
+        sys.exit(1)
     else:
         layout = args.teamocil_layout[0]
         # Sanitize input

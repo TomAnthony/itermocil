@@ -189,6 +189,13 @@ class Itermocil(object):
                 for p in range(3, num_panes+1):
                     self.applescript.append(create_pane(p-1, p, "horizontal"))
 
+        # 'main-vertical-flipped' layouts have one right pane that is full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'main-vertical-flipped':
+
+            self.applescript.append(create_pane(1, 2, "vertical"))
+            self.applescript.append(create_pane(1, 2, "horizontal"))
+
         # 'main-horizontal' layouts have one left pane that is full height,
         # and then split the remaining panes horizontally down the right
         elif layout == 'main-horizontal':
@@ -264,6 +271,17 @@ class Itermocil(object):
 
             # Focus back on the first pane
             self.applescript.append(prefix + 'keystroke "]" using command down')
+
+        # 'main-vertical-flipped' layouts have one right pane that is full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'main-vertical-flipped':
+
+            self.applescript.append(prefix + 'keystroke "d" using command down')
+
+            # Focus back on the first pane
+            self.applescript.append(prefix + 'key code 123 using {command down, option down}')
+
+            self.applescript.append(prefix + 'keystroke "D" using command down')
 
         # 'main-horizontal' layouts have one left pane  that is full height,
         # and then split the remaining panes horizontally down the right

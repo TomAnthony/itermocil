@@ -434,7 +434,7 @@ class Itermocil(object):
 
                 for pane_num, pane in enumerate(window['panes'], start=start_pane):
                     total_pane_count += 1
-                    pane_title = None
+                    pane_name = None
 
                     # each pane needs the base_command to navigate to
                     # the correct directory
@@ -444,7 +444,7 @@ class Itermocil(object):
                     # pane entries may be lists of multiple commands
                     if isinstance(pane, dict):
                         if 'commands' in pane:
-                            pane_title = pane.get('title', None)
+                            pane_name = pane.get('name', None)
                             for command in pane['commands']:
                                 escaped_command = command.replace('"', r'\"')
                                 pane_commands.append(escaped_command)
@@ -454,8 +454,8 @@ class Itermocil(object):
                         pane_commands.append(escaped_command)
 
                     # Check if window has a name.
-                    if pane_title:
-                        window_name = pane_title
+                    if pane_name:
+                        window_name = pane_name
                     else:
                         window_name = window.get('name', None)
 

@@ -477,7 +477,7 @@ class Itermocil(object):
                         escaped_command = pane.replace('"', r'\"')
                         pane_commands.append(escaped_command)
 
-                    # Check if window has a name.
+                    # Check if this pane, or containing window has a name.
                     if pane_name:
                         window_name = pane_name
                     else:

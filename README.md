@@ -2,7 +2,7 @@
 
 iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files.
 
-iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency.
+iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. Note that iTermocil does add some directives that will fail in teamocil if used, and should only be used if you don't also use teamocil. These are marked.
 
 ![Example](https://raw.githubusercontent.com/TomAnthony/itermocil/master/itermocil.gif)
 
@@ -120,6 +120,7 @@ windows:
         name: 'git'
       - rails server
 ```
+Note: the 'name' directive in 'commands' in an iTermocil specific addition, which will cause teamocil to fail if it tries to parse the file.
 
 ```
 .------------------.------------------.
@@ -261,6 +262,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [onthestairs](https://github.com/onthestairs)
 - [jefftriplett](https://github.com/jefftriplett)
 - [febLey](https://github.com/febLey)
+- [rebeling](https://github.com/rebeling)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

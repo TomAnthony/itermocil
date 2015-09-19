@@ -134,6 +134,35 @@ windows:
 '------------------'------------------'
 ```
 
+### Simple three pane window (flipped)
+
+```yaml
+windows:
+  - name: sample-three-panes
+    root: ~/Code/sample/www
+    layout: main-vertical-flipped
+    panes:
+      - commands:
+        - git pull
+        - git status
+      - rails server
+      - vim
+```
+
+```
+.------------------.------------------.
+| (0)              | (2)              |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+|------------------|                  |
+| (1)              |                  |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+'------------------'------------------'
+```
+
 ### Simple four pane window
 
 ```yaml

@@ -259,6 +259,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 
 - [onthestairs](https://github.com/onthestairs)
 - [jefftriplett](https://github.com/jefftriplett)
+- [febLey](https://github.com/febLey)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

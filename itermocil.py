@@ -163,7 +163,11 @@ class Itermocil(object):
         # Link a variable to the current window.
         self.applescript.append("set pane_1 to (current session of current window)")
 
-        # teamocil seems to treat the first 2 tiles of a tiled layout like this
+        # If we have just one pane we don't need to do any splitting.
+        if num_panes <= 1:
+            return
+
+        # tmux seems to treat the first 2 tiles of a tiled layout like this
         if num_panes == 2:
             if layout == 'tiled':
                 layout = 'even-vertical'
@@ -185,25 +189,24 @@ class Itermocil(object):
         elif layout == 'main-vertical':
 
             self.applescript.append(create_pane(1, 2, "vertical"))
-            if num_panes > 1:
-                for p in range(3, num_panes+1):
-                    self.applescript.append(create_pane(p-1, p, "horizontal"))
+            for p in range(3, num_panes+1):
+                self.applescript.append(create_pane(p-1, p, "horizontal"))
 
         # 'main-vertical-flipped' layouts have one right pane that is full height,
-        # and then split the remaining panes horizontally down the right
+        # and then split the remaining panes horizontally down the left
         elif layout == 'main-vertical-flipped':
 
-            self.applescript.append(create_pane(1, 2, "vertical"))
-            self.applescript.append(create_pane(1, 2, "horizontal"))
+            self.applescript.append(create_pane(1, num_panes, "vertical"))
+            for p in range(2, num_panes):
+                self.applescript.append(create_pane(p-1, p, "horizontal"))
 
         # 'main-horizontal' layouts have one left pane that is full height,
         # and then split the remaining panes horizontally down the right
         elif layout == 'main-horizontal':
 
             self.applescript.append(create_pane(1, 2, "horizontal"))
-            if num_panes > 1:
-                for p in range(3, num_panes+1):
-                    self.applescript.append(create_pane(p-1, p, "vertical"))
+            for p in range(3, num_panes+1):
+                self.applescript.append(create_pane(p-1, p, "vertical"))
 
         # 'tiled' layouts create 2 columns and then however many rows as
         # needed. If there are odd number of panes then the bottom pane
@@ -238,7 +241,11 @@ class Itermocil(object):
 
         prefix = 'tell i term application "System Events" to '
 
-        # teamocil seems to treat the first 2 tiles of a tiled layout like this
+        # If we have just one pane we don't need to do any splitting.
+        if num_panes <= 1:
+            return
+
+        # tmux seems to treat the first 2 tiles of a tiled layout like this
         if num_panes == 2 and layout == 'tiled':
             layout = 'even-vertical'
 
@@ -260,37 +267,36 @@ class Itermocil(object):
             # Focus back on the first pane
             self.applescript.append(prefix + 'keystroke "]" using command down')
 
-        # 'main-vertical' layouts have one left pane  that is full height,
+        # 'main-vertical' layouts have one left pane that is full height,
         # and then split the remaining panes horizontally down the right
         elif layout == 'main-vertical':
 
             self.applescript.append(prefix + 'keystroke "d" using command down')
-            if num_panes > 1:
-                for p in range(3, num_panes+1):
-                    self.applescript.append(prefix + 'keystroke "D" using command down')
+            for p in range(3, num_panes+1):
+                self.applescript.append(prefix + 'keystroke "D" using command down')
 
             # Focus back on the first pane
             self.applescript.append(prefix + 'keystroke "]" using command down')
 
         # 'main-vertical-flipped' layouts have one right pane that is full height,
-        # and then split the remaining panes horizontally down the right
+        # and then split the remaining panes horizontally down the left
         elif layout == 'main-vertical-flipped':
 
             self.applescript.append(prefix + 'keystroke "d" using command down')
 
             # Focus back on the first pane
-            self.applescript.append(prefix + 'key code 123 using {command down, option down}')
+            self.applescript.append(prefix + 'keystroke "[" using command down')
 
-            self.applescript.append(prefix + 'keystroke "D" using command down')
+            for p in range(3, num_panes+1):
+                self.applescript.append(prefix + 'keystroke "D" using command down')
 
         # 'main-horizontal' layouts have one left pane  that is full height,
         # and then split the remaining panes horizontally down the right
         elif layout == 'main-horizontal':
 
             self.applescript.append(prefix + 'keystroke "D" using command down')
-            if num_panes > 1:
-                for p in range(3, num_panes+1):
-                    self.applescript.append(prefix + 'keystroke "d" using command down')
+            for p in range(3, num_panes+1):
+                self.applescript.append(prefix + 'keystroke "d" using command down')
 
             # Focus back on the first pane
             self.applescript.append(prefix + 'keystroke "]" using command down')

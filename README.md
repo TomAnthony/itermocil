@@ -117,6 +117,7 @@ windows:
       - commands:
         - git pull
         - git status
+        name: 'git'
       - rails server
 ```
 

@@ -24,7 +24,6 @@ class Itermocil(object):
         """ Establish iTerm version, and initialise the list which
             will contain all the Applescript commands to execute.
         """
-
         # Check whether we are old or new iTerm (pre/post 2.9)
         major_version = self.get_major_version()
         self.new_iterm = True
@@ -459,6 +458,7 @@ class Itermocil(object):
 
                 for pane_num, pane in enumerate(window['panes'], start=start_pane):
                     total_pane_count += 1
+                    pane_name = None
 
                     # each pane needs the base_command to navigate to
                     # the correct directory
@@ -468,19 +468,20 @@ class Itermocil(object):
                     # pane entries may be lists of multiple commands
                     if isinstance(pane, dict):
                         if 'commands' in pane:
+                            pane_name = pane.get('name', None)
                             for command in pane['commands']:
                                 escaped_command = command.replace('"', r'\"')
                                 pane_commands.append(escaped_command)
-                        if 'commands' in pane:
                             focus_pane = pane_num
                     else:
                         escaped_command = pane.replace('"', r'\"')
                         pane_commands.append(escaped_command)
 
-                    # Check if windoww has a name.
-                    window_name = None
-                    if 'name' in window:
-                        window_name = window['name']
+                    # Check if window has a name.
+                    if pane_name:
+                        window_name = pane_name
+                    else:
+                        window_name = window.get('name', None)
 
                     self.initiate_pane(pane_num, pane_commands, window_name)
 

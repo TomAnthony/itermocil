@@ -46,17 +46,6 @@ class Itermocil(object):
         self.here = here
         self.cwd = cwd
 
-        # Old iTerm requirs referencing panes in this format!
-        self.nth = {
-             1: "first",       2: "second",       3: "third",
-             4: "fourth",      5: "fifth",        6: "sixth",
-             7: "seventh",     8: "eighth",       9: "ninth",
-            10: "tenth",      11: "eleventh",    12: "twelfth",
-            13: "thirteenth", 14: "fourteenth",  15: "fifteenth",
-            16: "sixteenth",  17: "seventeenth", 18: "eighteenth",
-            19: "nineteenth", 20: "twentieth",   21: "twentyfirst"
-        }
-
         # This will be where we build up the script.
         self.applescript = []
         self.applescript.append('tell application "iTerm"')
@@ -344,7 +333,9 @@ class Itermocil(object):
         if self.new_iterm:
             tell_target = 'pane_%s' % pane
         else:
-            tell_target = self.nth[pane] + ' session of current terminal'
+            # Converts numbers to 2nd, 3rd, 4th format for Applescript
+            ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
+            tell_target = ordinal(pane) + ' session of current terminal'
 
         # Setting the pane name is mercifully the same across both
         # iTerm versions.

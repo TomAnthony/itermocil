@@ -550,8 +550,10 @@ def main():
 
     if not args.teamocil_layout:
         # parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
-        parser.print_help()
-        sys.exit(1)
+        filepath = os.path.join(os.getcwd(), 'iTermocil.yml')
+        if not os.path.isfile(filepath):
+            parser.print_help()
+            sys.exit(1)
     else:
         layout = args.teamocil_layout[0]
         # Sanitize input
@@ -564,7 +566,11 @@ def main():
         if not os.path.isdir(teamocil_dir):
             print "ERROR: No ~/.teamocil directory"
             sys.exit(1)
-        filepath = os.path.join(teamocil_dir, layout + ".yml")
+        try:
+            filepath
+        except NameError:
+            filepath = os.path.join(teamocil_dir, layout + ".yml")
+
 
     # If --edit the try to launch editor and exit
     if args.edit:

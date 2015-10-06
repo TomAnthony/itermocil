@@ -1,0 +1,10 @@
+windows:
+  - name: _double_main_vertical_5_panes
+    root: ~
+    layout: double-main-vertical
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"
+      - echo "pane 4"
+      - echo "pane 5"

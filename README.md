@@ -221,6 +221,65 @@ windows:
 '------------------'------------------'
 ```
 
+### Five pane window
+
+```yaml
+windows:
+  - name: sample-five-panes
+    root: ~/Code/sample/www
+    layout: double-main-horizontal
+    panes:
+      - vim
+      - git log
+      - guard
+      - rails console
+      - tail -f log/development.log
+```
+
+```
+.-----------.-------------.-----------.
+| (0)       | (1)         | (2)       |
+|           |             |           |
+|           |             |           |
+|           |             |           |
+|-----------'------.------'-----------|
+| (4)              | (3)              |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+'------------------'------------------'
+```
+
+### double main  window
+
+```yaml
+windows:
+  - name: sample-double-main
+    root: ~/Code/sample/www
+    layout: double-main-vertical
+    panes:
+      - vim
+      - git log
+      - guard
+      - tail -f log/development.log
+      - rails console
+```
+
+```
+.-----------.-------------.-----------.
+| (0)       | (1)         | (2)       |
+|           |             |           |
+|           |             |-----------|
+|           |             | (3)       |
+|           |             |           |
+|           |             |-----------|
+|           |             | (4)       |
+|           |             |           |
+|           |             |           |
+'-----------'-------------'-----------'
+```
+
 ## Notes
 
 Teamocil allows supplying a name for a tmux session which has no purpose in iTerm, and so that option is ignored.

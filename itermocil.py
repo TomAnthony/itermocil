@@ -214,6 +214,24 @@ class Itermocil(object):
                 cp = pp + 1
                 self.applescript.append(create_pane(pp, cp, "vertical"))
 
+        # 'three-tiled' layouts create 3 columns and then however many rows as
+        # needed. If there are odd number of panes then the bottom pane
+        # spans two columns. Panes are numbered top to bottom, left to right.
+        elif layout == 'three-tiled':
+
+            vertical_splits = int(ceil((num_panes / 3.0))) - 1
+            second_columns = num_panes / 3
+
+            for p in range(0, vertical_splits):
+                pp = (p * 3) + 1
+                cp = pp + 3
+                self.applescript.append(create_pane(pp, cp, "horizontal"))
+
+            for p in range(0, second_columns):
+                pp = (p * 3) + 1
+                cp = pp + 3
+                self.applescript.append(create_pane(pp, cp, "vertical"))
+
         # Raise an exception if we don't recognise the layout setting.
         else:
             raise ValueError("Unknown layout setting.")

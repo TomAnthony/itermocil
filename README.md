@@ -263,6 +263,8 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [jefftriplett](https://github.com/jefftriplett)
 - [febLey](https://github.com/febLey)
 - [rebeling](https://github.com/rebeling)
+- [adityavarma1234](https://github.com/adityavarma1234)
+- [chris838](https://github.com/chris838)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

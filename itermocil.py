@@ -10,7 +10,7 @@ import yaml
 from math import ceil
 
 
-__version__ = '0.1.5'
+__version__ = '0.1.8'
 
 
 class Itermocil(object):

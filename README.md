@@ -77,7 +77,7 @@ A pane can either be a `String` or a `Hash`. If it’s a `String`, Teamocil will
 
 ## Examples
 
-See some example of various layouts below, or see [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOURS.md) for more information on the available layouts. There is also a variety of [example layout files](https://github.com/TomAnthony/itermocil/tree/master/test_layouts) in this repo.
+See some example of various layouts below, or see [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOUTS.md) for more information on the available layouts. There is also a variety of [example layout files](https://github.com/TomAnthony/itermocil/tree/master/test_layouts) in this repo.
 
 ### Simple two pane window
 
@@ -223,7 +223,7 @@ windows:
 
 ### Additional Layouts
 
-In the [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOURS.md) file you can see these additional layouts:
+In the [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOUTS.md) file you can see these additional layouts:
 
 - 3 columns over n rows
 

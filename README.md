@@ -225,7 +225,9 @@ windows:
 
 In the [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOUTS.md) file you can see these additional layouts:
 
-- 3 columns over n rows
+- 3_columns - 3 columns with as many rows as needed
+- double-main-vertical - 2 left full height columns, and a third multi-row column
+- double-main-horizontal - 2 rows, where bottom row is 2 full width columns, and top row is multi-column
 
 ## Notes
 
@@ -271,6 +273,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [rebeling](https://github.com/rebeling)
 - [adityavarma1234](https://github.com/adityavarma1234)
 - [chris838](https://github.com/chris838)
+- [mattmartini](https://github.com/mattmartini)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

@@ -193,3 +193,66 @@ windows:
 |            |            |            |
 '------------'------------'------------'
 ```
+
+### double-main-horizontal
+
+Create 2 rows. The bottom row is 2 full width columns and the top row is split into as many columns as needed.
+
+```yaml
+windows:
+  - name: sample-five-panes
+    root: ~/Code/sample/www
+    layout: double-main-horizontal
+    panes:
+      - vim
+      - git log
+      - guard
+      - rails console
+      - tail -f log/development.log
+```
+
+```
+.-----------.-------------.-----------.
+| (0)       | (1)         | (2)       |
+|           |             |           |
+|           |             |           |
+|           |             |           |
+|-----------'------.------'-----------|
+| (4)              | (3)              |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+|                  |                  |
+'------------------'------------------'
+```
+
+### double-main-vertical
+
+Create 2 full height columns on the left, and a third column with as many rows as needed.
+
+```yaml
+windows:
+  - name: sample-double-main
+    root: ~/Code/sample/www
+    layout: double-main-vertical
+    panes:
+      - vim
+      - git log
+      - guard
+      - tail -f log/development.log
+      - rails console
+```
+
+```
+.-----------.-------------.-----------.
+| (0)       | (1)         | (2)       |
+|           |             |           |
+|           |             |-----------|
+|           |             | (3)       |
+|           |             |           |
+|           |             |-----------|
+|           |             | (4)       |
+|           |             |           |
+|           |             |           |
+'-----------'-------------'-----------'
+```

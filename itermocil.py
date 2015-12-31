@@ -196,6 +196,24 @@ class Itermocil(object):
             for p in range(3, num_panes+1):
                 self.applescript.append(create_pane(p-1, p, "vertical"))
 
+        # 'double-main-horizontal' layouts have two left panes that are full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'double-main-horizontal':
+
+            self.applescript.append(create_pane(1, num_panes-1, "horizontal"))
+            self.applescript.append(create_pane(num_panes-1, num_panes, "vertical"))
+            for p in range(2, num_panes-1):
+                self.applescript.append(create_pane(p-1, p, "vertical"))
+
+        # 'double-main-vertical' layouts have two bottom panes that spllit the width
+        # and then split the remaining panes vertically across the top
+        elif layout == 'double-main-vertical':
+
+            self.applescript.append(create_pane(1, 2, "vertical"))
+            self.applescript.append(create_pane(2, 3, "vertical"))
+            for p in range(4, num_panes+1):
+                self.applescript.append(create_pane(p-1, p, "horizontal"))
+
         # 'tiled' layouts create 2 columns and then however many rows as
         # needed. If there are odd number of panes then the bottom pane
         # spans two columns. Panes are numbered top to bottom, left to right.
@@ -360,6 +378,30 @@ class Itermocil(object):
                 self.applescript.append(prefix + 'keystroke "d" using command down')
                 if i >= num_panes:
                     break
+
+        # 'double-main-horizontal' layouts have two left panes that are full height,
+        # and then split the remaining panes horizontally down the right
+        elif layout == 'double-main-horizontal':
+
+            self.applescript.append(prefix + 'keystroke "d" using command down')
+            if num_panes > 2:
+                self.applescript.append(prefix + 'keystroke "d" using command down')
+
+            if num_panes > 3:
+                for p in range(0, num_panes-3):
+                    self.applescript.append(prefix + 'keystroke "D" using command down')
+
+        # 'double-main-vertical' layouts have two bottom panes that split the width
+        # and then split the remaining panes vertically across the top
+        elif layout == 'double-main-vertical':
+
+            self.applescript.append(prefix + 'keystroke "D" using command down')
+            self.applescript.append(prefix + 'keystroke "d" using command down')
+
+            self.applescript.append(prefix + 'keystroke "]" using command down')
+            if num_panes > 3:
+                for p in range(0, num_panes-3):
+                    self.applescript.append(prefix + 'keystroke "d" using command down')
 
         # Raise an exception if we don't recognise the layout setting.
         else:

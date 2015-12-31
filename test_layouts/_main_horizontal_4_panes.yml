@@ -1,7 +1,7 @@
 windows:
   - name: _main_horizontal_4_panes
     root: ~
-    layout: main-horiztonal
+    layout: main-horizontal
     panes:
       - echo "pane 1"
       - echo "pane 2"

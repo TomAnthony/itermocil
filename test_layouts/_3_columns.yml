@@ -1,0 +1,14 @@
+windows:
+  - name: _3_columns
+    root: ~
+    layout: 3_columns
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"
+      - echo "pane 4"
+      - echo "pane 5"
+      - echo "pane 6"
+      - echo "pane 7"
+      - echo "pane 8"
+      - echo "pane 9"

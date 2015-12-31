@@ -214,6 +214,31 @@ class Itermocil(object):
                 cp = pp + 1
                 self.applescript.append(create_pane(pp, cp, "vertical"))
 
+        # '3_columns' layouts create 3 columns and then however many rows as
+        # needed. If there are odd number of panes then the bottom pane
+        # spans two columns. Panes are numbered top to bottom, left to right.
+        elif layout == '3_columns':
+
+            vertical_splits = int(ceil((num_panes / 3.0))) - 1
+            second_columns = num_panes / 3
+            i = 1
+
+            for p in range(0, vertical_splits):
+                pp = (p * 3) + 1
+                cp = pp + 3
+                i += 1
+                self.applescript.append(create_pane(pp, cp, "horizontal"))
+
+            for p in range(0, vertical_splits+1):
+                pp = (p * 3) + 1
+                for q in range(0, 2):
+                    if i >= num_panes:
+                        break 
+                    qp = pp + q
+                    cp = pp + 1 + q
+                    i += 1
+                    self.applescript.append(create_pane(qp, cp, "vertical"))
+
         # Raise an exception if we don't recognise the layout setting.
         else:
             raise ValueError("Unknown layout setting.")
@@ -312,6 +337,29 @@ class Itermocil(object):
             if num_panes % 2 != 0:
                 # If odd number of panes then move once more to return to initial pane.
                 self.applescript.append(prefix + 'keystroke "]" using command down')
+
+        # '3_columns' layouts create 3 columns and then however many rows as
+        # needed. If there are odd number of panes then the bottom pane
+        # spans two columns. Panes are numbered top to bottom, left to right.
+        elif layout == '3_columns':
+
+            vertical_splits = int(ceil((num_panes / 3.0))) - 1
+
+            i = 1
+            for p in range(0, vertical_splits):
+                self.applescript.append(prefix + 'keystroke "D" using command down')
+                i += 1
+
+            while True:
+                self.applescript.append(prefix + 'keystroke "]" using command down')
+                i += 1
+                self.applescript.append(prefix + 'keystroke "d" using command down')
+                if i >= num_panes:
+                    break
+                i += 1
+                self.applescript.append(prefix + 'keystroke "d" using command down')
+                if i >= num_panes:
+                    break
 
         # Raise an exception if we don't recognise the layout setting.
         else:

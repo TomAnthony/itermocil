@@ -46,11 +46,17 @@ class Itermocil(object):
         self.here = here
         self.cwd = cwd
 
+        # Open up the file and parse it with PyYaml
+        with open(self.file, 'r') as f:
+            self.teamocil_config = yaml.load(f)
+
         # This will be where we build up the script.
         self.applescript = []
         self.applescript.append('tell application "iTerm"')
         self.applescript.append('activate')
-
+        
+        if 'pre' in self.teamocil_config:
+            self.applescript.append('do shell script "'+self.teamocil_config['pre']+';"')
         # If we need to open a new window, then add necessary commands
         # to script.
         if not self.here:
@@ -472,8 +478,8 @@ class Itermocil(object):
         """
 
         # Open up the file and parse it with PyYaml
-        with open(self.file, 'r') as f:
-            teamocil_config = yaml.load(f)
+        #with open(self.file, 'r') as f:
+        #    teamocil_config = yaml.load(f)
 
         # total_pane_count is only used for old iTerm, and is needed to
         # reference panes created in later windows
@@ -484,11 +490,11 @@ class Itermocil(object):
             if self.here:
                 total_pane_count -= 1
 
-        if 'windows' not in teamocil_config:
+        if 'windows' not in self.teamocil_config:
             print "ERROR: No windows defined in " + self.file
             sys.exit(1)
 
-        for num, window in enumerate(teamocil_config['windows']):
+        for num, window in enumerate(self.teamocil_config['windows']):
             if num > 0:
                 if self.new_iterm:
                     self.applescript.append('tell current window')

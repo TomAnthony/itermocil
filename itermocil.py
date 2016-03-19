@@ -549,11 +549,16 @@ class Itermocil(object):
                     # pane entries may be lists of multiple commands
                     if isinstance(pane, dict):
                         if 'commands' in pane:
-                            pane_name = pane.get('name', None)
                             for command in pane['commands']:
                                 escaped_command = command.replace('"', r'\"')
                                 pane_commands.append(escaped_command)
+
+                        if 'name' in pane:
+                            pane_name = pane.get('name', None)
+
+                        if 'focus' in pane:
                             focus_pane = pane_num
+
                     else:
                         escaped_command = pane.replace('"', r'\"')
                         pane_commands.append(escaped_command)

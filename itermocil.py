@@ -145,12 +145,10 @@ class Itermocil(object):
             generating a version for old iTerm.
         """
 
-        panes = self.teamocil_config['windows'][current_window]['panes']
-
         def create_pane(parent, child, split="vertical"):
 
             if 'profile' in self.teamocil_config['windows'][current_window]['panes'][child-1]:
-                profile = 'profile "' + panes[child-1]['profile'] + '"'
+                profile = 'profile "' + self.teamocil_config['windows'][current_window]['panes'][child-1]['profile'] + '"'
             else:
                 profile = "same profile"
 

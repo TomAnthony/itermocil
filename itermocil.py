@@ -251,7 +251,7 @@ class Itermocil(object):
                 pp = (p * 3) + 1
                 for q in range(0, 2):
                     if i >= num_panes:
-                        break 
+                        break
                     qp = pp + q
                     cp = pp + 1 + q
                     i += 1

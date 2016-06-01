@@ -57,6 +57,7 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 |-----------|----------------------------
 | `name`    | This is currently ignored in iTermocil as there is no tmux session.
 | `windows` | An `Array` of windows
+| `pre`     | Command that get executes before all other actions.
 
 ### Windows
 
@@ -297,6 +298,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [glasnoster](https://github.com/glasnoster)
 - [bitsapien](https://github.com/bitsapien)
 - [galaxyutii](https://github.com/galaxyutii)
+- [mbollemeijer](https://github.com/mbollemeijer)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

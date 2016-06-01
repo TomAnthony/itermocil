@@ -2,7 +2,7 @@
 
 iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files.
 
-iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. Note that iTermocil does add some directives that will fail in teamocil if used, and should only be used if you don't also use teamocil. These are marked.
+iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. However, iTermocil also has support for additional directives which will cause teamocil to fail, if used.
 
 ![Example](https://raw.githubusercontent.com/TomAnthony/itermocil/master/itermocil.gif)
 
@@ -14,14 +14,16 @@ $ brew update
 $ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory
-$ mkdir ~/.teamocil
+$ mkdir ~/.itermocil
 
-# Edit ~/.teamocil/sample.yml (look for sample layouts in this very `README.md`)
+# Edit ~/.itermocil/sample.yml (look for sample layouts in this very `README.md`)
 # There are also a variety of example files in 'test_layouts' directory in this repo
 $ itermocil --edit sample
 
 # Run your newly-created sample layout
 $ itermocil sample
+
+# Note that you can also used ~/.teamocil as your directory, if you're a teamocil user.
 ```
 
 ## Using iTermocil
@@ -36,7 +38,7 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 
 | Option      | Description
 |-------------|----------------------------
-| `--list`    | Lists all available layouts in `~/.teamocil`
+| `--list`    | Lists all available layouts in `~/.itermocil`
 
 ### Layout options
 
@@ -64,8 +66,8 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 | `root`     | The path where all panes in the window will be started
 | `layout`   | The layout format that iTermocil will use (see below)
 | `panes`    | An `Array` of panes
-| `command`  | A command to run in the new name. Ignored if `panes` is present
-| `commands` | An array of commands for run (if one is not enough). Ignored if either `panes` or `command `is present
+| `command`  | A command to run in the current window. Ignored if `panes` is present
+| `commands` | An array of commands for run in the current window. Ignored if either `panes` or `command `is present
 | `focus`    | This is currently unsupported in iTermocil
 
 
@@ -262,7 +264,7 @@ iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta
 To get autocompletion when typing `itermocil <Tab>` in a zsh session, add this line to your `~/.zshrc` file:
 
 ```zsh
-compctl -g '~/.teamocil/*(:t:r)' itermocil
+compctl -g '~/.itermocil/*(:t:r)' itermocil
 ```
 
 ### Bash autocompletion
@@ -292,6 +294,8 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [adityavarma1234](https://github.com/adityavarma1234)
 - [chris838](https://github.com/chris838)
 - [mattmartini](https://github.com/mattmartini)
+- [glasnoster](https://github.com/glasnoster)
+- [bitsapien](https://github.com/bitsapien)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

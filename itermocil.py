@@ -251,7 +251,7 @@ class Itermocil(object):
                 pp = (p * 3) + 1
                 for q in range(0, 2):
                     if i >= num_panes:
-                        break 
+                        break
                     qp = pp + q
                     cp = pp + 1 + q
                     i += 1
@@ -443,6 +443,16 @@ class Itermocil(object):
                 end tell
             '''.format(tell_target=tell_target, command=command, name=name_command))
 
+    def initiate_window(self, commands=None):
+        """ Runs the list of commands in the current pane
+        """
+        command = "; ".join(commands)
+        self.applescript.append(
+            ''' tell current session of current window
+                    write text "{command}"
+                end tell
+            '''.format(command=command))
+
     def focus_on_pane(self, pane):
         """ Switch focus to the specified pane.
         """
@@ -524,12 +534,12 @@ class Itermocil(object):
 
             # Generate Applescript to lay the panes out and then add to our
             # Applescript commands to run.
-            if self.new_iterm:
-                self.arrange_panes(len(window['panes']), layout)
-            else:
-                self.arrange_panes_old_iterm(len(window['panes']), layout)
-
             if 'panes' in window:
+
+                if self.new_iterm:
+                    self.arrange_panes(len(window['panes']), layout)
+                else:
+                    self.arrange_panes_old_iterm(len(window['panes']), layout)
 
                 focus_pane = None
                 if self.new_iterm:
@@ -567,6 +577,14 @@ class Itermocil(object):
                     self.initiate_pane(pane_num, pane_commands, window_name)
 
                 self.focus_on_pane(focus_pane)
+
+            else:
+                commands = []
+                if 'command' in window:
+                    commands = window['command']
+                elif 'commands' in window:
+                    commands = window['commands']
+                self.initiate_window(commands)
 
 
 def main():

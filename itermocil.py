@@ -31,15 +31,16 @@ class Itermocil(object):
         if tuple(int(n) for n in str(major_version).split(".")) < (2, 9):
             self.new_iterm = False
         else:
-            # Temporary check to check for unsupported versionf of iTerm beta
+            # Temporary check to check for unsupported version of iTerm beta
             v = self.get_version_string()
             bits = v.split('.')
-            build = bits[2].replace('-nightly', '')
-            if (int(build) < 20150805):
-                print "This is an unsupported beta build of iTerm."
-                print "Try the latest nightly, or the 2.1.1 stable build."
-                print "See Readme notes for more info. Sorry!"
-                sys.exit(1)
+            if len(bits) > 2:
+                build = bits[2].replace('-nightly', '')
+                if (int(build) < 20150805):
+                    print "This is an unsupported beta build of iTerm."
+                    print "Try the latest nightly, or the 2.1.1 stable build."
+                    print "See Readme notes for more info. Sorry!"
+                    sys.exit(1)
 
         # Initiate from arguments
         self.file = teamocil_file
@@ -92,7 +93,11 @@ class Itermocil(object):
 
         v = self.get_version_string()
 
-        return float(v[:3])
+        try:
+            mv = float(v[:3])
+            return mv
+        except ValueError:
+            return 99.0
 
     def get_num_panes_in_current_window(self):
         """ Get the number of panes already existing in the current window.
@@ -594,7 +599,7 @@ def main():
         usage='%(prog)s [options] <layout>'
     )
 
-    parser.add_argument("teamocil_layout",
+    parser.add_argument("layout_name",
                         help="the layout name you wish to process",
                         metavar="layout",
                         nargs="*")
@@ -638,7 +643,9 @@ def main():
 
     args = parser.parse_args()
 
-    # teamocil files live in a hidden directory in the home directory
+    # itermocil files live in a hidden directory in the home directory
+    # either in an .itermocil directory or a .teamocil directory
+    itermocil_dir = os.path.join(os.path.expanduser("~"), ".itermocil")
     teamocil_dir = os.path.join(os.path.expanduser("~"), ".teamocil")
 
     # If --version then show the version number
@@ -648,20 +655,20 @@ def main():
 
     # If --list then show the layout names in ~./teamocil
     if args.list:
-        if not os.path.isdir(teamocil_dir):
-            print "ERROR: No ~/.teamocil directory"
-            sys.exit(1)
-        for file in os.listdir(teamocil_dir):
-            if file.endswith(".yml"):
-                print(file[:-4])
+        for d in [itermocil_dir, teamocil_dir]:
+            if os.path.isdir(d):
+                print d
+                for file in os.listdir(d):
+                    if file.endswith(".yml"):
+                        print("  " + file[:-4])
         sys.exit(0)
 
-    if not args.teamocil_layout:
+    if not args.layout_name:
         # parser.error('You must supply a layout name, or just the --list option. Use -h for help.')
         parser.print_help()
         sys.exit(1)
     else:
-        layout = args.teamocil_layout[0]
+        layout = args.layout_name[0]
         # Sanitize input
         layout = re.sub("[\*\?\[\]\'\"\\\$\;\&\(\)\|\^\<\>]", "", layout)
 
@@ -669,10 +676,14 @@ def main():
     if args.layout:
         filepath = os.path.join(os.getcwd(), layout)
     else:
-        if not os.path.isdir(teamocil_dir):
-            print "ERROR: No ~/.teamocil directory"
-            sys.exit(1)
-        filepath = os.path.join(teamocil_dir, layout + ".yml")
+        if not os.path.isdir(itermocil_dir):
+            if not os.path.isdir(teamocil_dir):
+                print "ERROR: No ~/.itermocil or ~/.teamocil directory"
+                sys.exit(1)
+
+        filepath = os.path.join(itermocil_dir, layout + ".yml")
+        if not os.path.isfile(filepath):
+            filepath = os.path.join(teamocil_dir, layout + ".yml")
 
     # If --edit the try to launch editor and exit
     if args.edit:

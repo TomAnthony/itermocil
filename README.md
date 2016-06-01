@@ -296,6 +296,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [mattmartini](https://github.com/mattmartini)
 - [glasnoster](https://github.com/glasnoster)
 - [bitsapien](https://github.com/bitsapien)
+- [galaxyutii](https://github.com/galaxyutii)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

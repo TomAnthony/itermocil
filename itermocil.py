@@ -481,14 +481,14 @@ class Itermocil(object):
                                         'to keystroke "]" using command down')
 
     def process_file(self):
-        """ Parse the named teamocil file, generate Applescript to send to
+        """ Parse the named iTermocil file, generate Applescript to send to
             iTerm2 to generate panes, name them and run the specified commands
             in them.
         """
 
         # Open up the file and parse it with PyYaml
         with open(self.file, 'r') as f:
-            teamocil_config = yaml.load(f)
+            parsed_config = yaml.load(f)
 
         # total_pane_count is only used for old iTerm, and is needed to
         # reference panes created in later windows
@@ -499,11 +499,11 @@ class Itermocil(object):
             if self.here:
                 total_pane_count -= 1
 
-        if 'windows' not in teamocil_config:
+        if 'windows' not in parsed_config:
             print "ERROR: No windows defined in " + self.file
             sys.exit(1)
 
-        for num, window in enumerate(teamocil_config['windows']):
+        for num, window in enumerate(parsed_config['windows']):
             if num > 0:
                 if self.new_iterm:
                     self.applescript.append('tell current window')

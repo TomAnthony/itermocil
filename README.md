@@ -310,4 +310,4 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 ## License
 
-iTermocil is © 2015 [Tom Anthony](https://twitter.com/tomanthonyseo) and may be freely distributed under the [MIT license](https://github.com/TomAnthony/itermocil/blob/master/LICENSE.md). See the LICENSE file for more information.
+iTermocil is © 2016 [Tom Anthony](https://twitter.com/tomanthonyseo) and may be freely distributed under the [MIT license](https://github.com/TomAnthony/itermocil/blob/master/LICENSE.md). See the LICENSE file for more information.

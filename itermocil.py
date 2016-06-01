@@ -35,7 +35,9 @@ class Itermocil(object):
             v = self.get_version_string()
             bits = v.split('.')
             build = bits[2].replace('-nightly', '')
-            if (int(build) < 20150805):
+            # check sees if the nightly build is less than 20150805 and
+            # ... also checks if the normal sematic version is less than version 3
+            if ((int(build) < 20150805) & (int(bits[0]) < 3)):
                 print "This is an unsupported beta build of iTerm."
                 print "Try the latest nightly, or the 2.1.1 stable build."
                 print "See Readme notes for more info. Sorry!"

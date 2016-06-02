@@ -24,6 +24,7 @@ class Itermocil(object):
         """ Establish iTerm version, and initialise the list which
             will contain all the Applescript commands to execute.
         """
+
         # Check whether we are old or new iTerm (pre/post 2.9)
         major_version = self.get_major_version()
         self.new_iterm = True

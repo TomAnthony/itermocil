@@ -1,8 +1,6 @@
 ## Introduction
 
-iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files.
-
-iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. However, iTermocil also has support for additional directives which will cause teamocil to fail, if used.
+iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files to save your layouts. If your using session restoration or saved window layouts in iTerm, you should find iTermocil is a nice upgrade on that.
 
 iTermocil supports iTerm 2.x and the new 3.x (including later betas). It works better with the new 3.x versions which have improved Applescript support.
 
@@ -259,6 +257,10 @@ In the [Layouts](https://github.com/TomAnthony/itermocil/blob/master/LAYOUTS.md)
 - double-main-vertical - 2 left full height columns, and a third multi-row column
 - double-main-horizontal - 2 rows, where bottom row is 2 full width columns, and top row is multi-column
 
+## teamocil
+
+iTermocil was originally inspired by and is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. However, iTermocil also has support for additional directives which will cause teamocil to fail, if used.
+
 ## Notes
 
 Teamocil allows supplying a name for a tmux session which has no purpose in iTerm, and so that option is ignored.
@@ -316,6 +318,7 @@ A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamoc
 
 ## To Do
 
+- make a way to 'save' the current layout (not sure is possible)
 - add tmuxinator file support
 - add support for bespoke file format to support things like iTerm badges and tab colours
 - possibly add a flag for using windows instead of tabs for new 'windows'

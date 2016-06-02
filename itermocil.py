@@ -595,7 +595,7 @@ class Itermocil(object):
             else:
                 commands = []
                 if 'command' in window:
-                    commands = window['command']
+                    commands.append(window['command'])
                 elif 'commands' in window:
                     commands = window['commands']
                 self.initiate_window(commands)

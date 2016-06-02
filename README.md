@@ -32,6 +32,8 @@ $ itermocil sample
 $ itermocil [options] <layout-name>
 ```
 
+Alternatively, if you have an `iTermocil.yml` file in the current directory you can simply run `itermocil` and it will use that file, so you can have files inside your projects and sync via Github etc.
+
 iTermocil is compatible with all of teamocil's flags, and they all work in the same way.
 
 ### Global options
@@ -299,6 +301,7 @@ I'd love any ideas/feedback/thoughts, please open [an issue](https://github.com/
 - [bitsapien](https://github.com/bitsapien)
 - [galaxyutii](https://github.com/galaxyutii)
 - [mbollemeijer](https://github.com/mbollemeijer)
+- [mcky](https://github.com/mcky)
 
 A huge thanks to [Rémi Prévost](http://www.exomel.com/en) who authored [teamocil](https://github.com/remiprev/teamocil), which inspired iTermocil. It is a fantastic tool, and I'm hoping that iTermocil helps more people discover teamocil.
 

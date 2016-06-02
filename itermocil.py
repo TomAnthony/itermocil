@@ -24,6 +24,7 @@ class Itermocil(object):
         """ Establish iTerm version, and initialise the list which
             will contain all the Applescript commands to execute.
         """
+
         # Check whether we are old or new iTerm (pre/post 2.9)
         major_version = self.get_major_version()
         self.new_iterm = True
@@ -47,11 +48,17 @@ class Itermocil(object):
         self.here = here
         self.cwd = cwd
 
+        # Open up the file and parse it with PyYaml
+        with open(self.file, 'r') as f:
+            self.parsed_config = yaml.load(f)
+
         # This will be where we build up the script.
         self.applescript = []
         self.applescript.append('tell application "iTerm"')
         self.applescript.append('activate')
 
+        if 'pre' in self.parsed_config:
+            self.applescript.append('do shell script "' + self.parsed_config['pre'] + ';"')
         # If we need to open a new window, then add necessary commands
         # to script.
         if not self.here:
@@ -486,10 +493,6 @@ class Itermocil(object):
             in them.
         """
 
-        # Open up the file and parse it with PyYaml
-        with open(self.file, 'r') as f:
-            parsed_config = yaml.load(f)
-
         # total_pane_count is only used for old iTerm, and is needed to
         # reference panes created in later windows
         if self.new_iterm:
@@ -499,11 +502,11 @@ class Itermocil(object):
             if self.here:
                 total_pane_count -= 1
 
-        if 'windows' not in parsed_config:
+        if 'windows' not in self.parsed_config:
             print "ERROR: No windows defined in " + self.file
             sys.exit(1)
 
-        for num, window in enumerate(parsed_config['windows']):
+        for num, window in enumerate(self.parsed_config['windows']):
             if num > 0:
                 if self.new_iterm:
                     self.applescript.append('tell current window')

@@ -57,6 +57,7 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 |-----------|----------------------------
 | `name`    | This is currently ignored in iTermocil as there is no tmux session.
 | `windows` | An `Array` of windows
+| `pre`     | Command that get executes before all other actions.
 
 ### Windows
 

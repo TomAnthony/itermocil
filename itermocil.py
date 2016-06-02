@@ -35,7 +35,7 @@ class Itermocil(object):
             # Temporary check to check for unsupported version of iTerm beta
             v = self.get_version_string()
             bits = v.split('.')
-            if len(bits) > 2:
+            if len(bits) > 2 and '-nightly' in str(major_version):
                 build = bits[2].replace('-nightly', '')
                 if (int(build) < 20150805):
                     print "This is an unsupported beta build of iTerm."

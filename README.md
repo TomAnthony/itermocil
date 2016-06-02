@@ -4,6 +4,8 @@ iTermocil allows you to setup pre-configured layouts of windows and panes in [iT
 
 iTermocil is compatible with [teamocil](https://github.com/remiprev/teamocil), allowing anyone with teamocil files to execute those files natively in iTerm2, without needing tmux or any other dependency. However, iTermocil also has support for additional directives which will cause teamocil to fail, if used.
 
+iTermocil supports iTerm 2.x and the new 3.x (including later betas). It works better with the new 3.x versions which have improved Applescript support.
+
 ![Example](https://raw.githubusercontent.com/TomAnthony/itermocil/master/itermocil.gif)
 
 ## Installing iTermocil
@@ -32,7 +34,12 @@ $ itermocil sample
 $ itermocil [options] <layout-name>
 ```
 
-Alternatively, if you have an `iTermocil.yml` file in the current directory you can simply run `itermocil` and it will use that file, so you can have files inside your projects and sync via Github etc.
+Alternatively, if you have an `iTermocil.yml` file in the current directory you can simply run `itermocil` and it will use that file, so you can have files inside your projects and sync via Github etc:
+
+```bash
+$ cd my_project
+$ itermocil
+```
 
 iTermocil is compatible with all of teamocil's flags, and they all work in the same way.
 

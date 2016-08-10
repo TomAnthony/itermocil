@@ -530,7 +530,10 @@ class Itermocil(object):
 
             # Extract starting directory for panes in this window, if given.
             if 'root' in window:
-                if window['root']:
+                if window['root'] == 'cwd':
+                    parsed_path = os.getcwd().replace(" ", "\\\ ")
+                    base_command.append('cd {path}'.format(path=parsed_path))
+                elif window['root']:
                     parsed_path = window['root'].replace(" ", "\\\ ")
                     base_command.append('cd {path}'.format(path=parsed_path))
                 else:

@@ -166,7 +166,7 @@ class Itermocil(object):
         """
 
         def create_pane(parent, child, split="vertical",profile="default"):
-            ps = "same profile" if profile == "default" else "profile \"%s\"" % profile
+            ps = "default profile" if profile == "default" else "profile \"%s\"" % profile
             return (''' tell pane_{pp}
                             set pane_{cp} to (split {o}ly with {ps})
                         end tell

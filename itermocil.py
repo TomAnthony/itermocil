@@ -60,7 +60,7 @@ class Itermocil(object):
         if 'pre' in self.parsed_config:
             self.applescript.append('do shell script "' + self.parsed_config['pre'] + ';"')
 
-        # TODO: profile stuff: profile cannot be set AFTER loading so it does not work for reusing windows
+        # cannot be set AFTER loading so it does not work for reusing windows
         # and for the first pane of first window
         firstprofile = "default"
         try:

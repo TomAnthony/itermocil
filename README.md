@@ -72,6 +72,7 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 |------------|----------------------------
 | `name`     | All iTerm panes in this window will be given this name.
 | `root`     | The path where all panes in the window will be started
+| `profile`  | The profile for all the panes of the window (default is the standard one) (only if new window)
 | `layout`   | The layout format that iTermocil will use (see below)
 | `panes`    | An `Array` of panes
 | `command`  | A command to run in the current window. Ignored if `panes` is present
@@ -87,6 +88,7 @@ A pane can either be a `String` or a `Hash`. If it’s a `String`, Teamocil will
 |------------|----------------------------
 | `commands` | An `Array` of commands that will be ran when the pane is created
 | `focus`    | If set to `true`, the pane will be selected after the layout has been executed
+| `profile`  | The profile of the specific panel otherwise the one of parent window
 
 ## Examples
 

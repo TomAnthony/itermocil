@@ -10,7 +10,7 @@ import yaml
 from math import ceil
 
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 
 class Itermocil(object):
@@ -166,7 +166,13 @@ class Itermocil(object):
         """
 
         def create_pane(parent, child, split="vertical",profile="default"):
-            ps = "default profile" if profile == "default" else "profile \"%s\"" % profile
+            # handle special case
+            if profile == "":
+                ps = "same profile"
+            elif profile == "default":
+                ps = "default profile"
+            else:
+                ps = "profile \"%s\"" % profile
             return (''' tell pane_{pp}
                             set pane_{cp} to (split {o}ly with {ps})
                         end tell
@@ -525,21 +531,36 @@ class Itermocil(object):
 
             # Extract profile
             if "profile" in window:
-                profile = window['profile']
+                window_profile = window['profile']
+                window_profile_spec = True
             else:
-                profile = "default"
+                window_profile = "default" 
+                window_profile_spec = False
 
-            # Extract profile of first pane => profile of first tab command
-            if 'panes' in window and len(window["panes"]) > 0 and type(window["panes"][0]) == dict:
-                firstprofile = window["panes"][0].get("profile",profile)
+            # Default Behavior: no pane specifies profile and no profile in window => same for panes
+            # New Behavior: window specifies, or pane specifies => default or specified for panes
+            if window_profile_spec:
+                panes_have_profile = True
             else:
-                firstprofile = profile
+                panes_have_profile = False
+                for p in window.get("panes",[]):
+                    if type(p) == dict and "profile" in p:
+                        panes_have_profile = True
+                        break
 
-            # Define all profiles of all panes by inheritance or specification
-            paneprofiles = [p.get("profile",profile) if type(p) == dict else profile for p in window.get("panes",[])]
-            #print "profiles first,default,panes:",firstprofile,profile,paneprofiles
+            if panes_have_profile:
+                paneprofiles = [p.get("profile",window_profile) if type(p) == dict else window_profile for p in window.get("panes",[])]
+            else:                
+                # empty means same
+                paneprofiles = ["" for p in window.get("panes",[])]
 
             if num > 0:
+                # Extract profile of first pane => profile of first tab command
+                if 'panes' in window and len(window["panes"]) > 0 and type(window["panes"][0]) == dict:
+                    firstprofile = window["panes"][0].get("profile",window_profile)
+                else:
+                    firstprofile = window_profile
+
                 # first TAB has been created before this function, so apply window profile
                 ps = "default profile" if firstprofile == "default" else "profile \"%s\"" % firstprofile                
                 if self.new_iterm:

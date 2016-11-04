@@ -165,8 +165,8 @@ class Itermocil(object):
             generating a version for old iTerm.
         """
 
-        def create_pane(parent, child, split="vertical",profile="same"):
-            ps = "default profile" if profile == "default" else "profile \"%s\"" % profile
+        def create_pane(parent, child, split="vertical",profile="default"):
+            ps = "same profile" if profile == "default" else "profile \"%s\"" % profile
             return (''' tell pane_{pp}
                             set pane_{cp} to (split {o}ly with {ps})
                         end tell
@@ -245,19 +245,19 @@ class Itermocil(object):
 
             vertical_splits = int(ceil((num_panes / 2.0))) - 1
             second_columns = num_panes / 2
-            k = 1
+            i = 1
 
             for p in range(0, vertical_splits):
                 pp = (p * 2) + 1
                 cp = pp + 2
                 self.applescript.append(create_pane(pp, cp, "horizontal",profile=profiles[k]))
-                k += 1
+                i += 1
 
             for p in range(0, second_columns):
                 pp = (p * 2) + 1
                 cp = pp + 1
                 self.applescript.append(create_pane(pp, cp, "vertical",profile=profiles[k]))
-                k += 1
+                i += 1
 
         # '3_columns' layouts create 3 columns and then however many rows as
         # needed. If there are odd number of panes then the bottom pane
@@ -271,8 +271,8 @@ class Itermocil(object):
             for p in range(0, vertical_splits):
                 pp = (p * 3) + 1
                 cp = pp + 3
+                self.applescript.append(create_pane(pp, cp, "horizontal",profile=profiles[i]))
                 i += 1
-                self.applescript.append(create_pane(pp, cp, "horizontal",profile=profiles[i-1]))
 
             for p in range(0, vertical_splits+1):
                 pp = (p * 3) + 1
@@ -281,8 +281,8 @@ class Itermocil(object):
                         break
                     qp = pp + q
                     cp = pp + 1 + q
+                    self.applescript.append(create_pane(qp, cp, "vertical",profiles[i]))
                     i += 1
-                    self.applescript.append(create_pane(qp, cp, "vertical",profiles[i-1]))
 
         # Raise an exception if we don't recognise the layout setting.
         else:
@@ -522,21 +522,25 @@ class Itermocil(object):
             sys.exit(1)
 
         for num, window in enumerate(self.parsed_config['windows']):
-            # Extract layout format, if given.
+
+            # Extract profile
             if "profile" in window:
                 profile = window['profile']
             else:
                 profile = "default"
 
+            # Extract profile of first pane => profile of first tab command
             if 'panes' in window and len(window["panes"]) > 0 and type(window["panes"][0]) == dict:
                 firstprofile = window["panes"][0].get("profile",profile)
             else:
                 firstprofile = profile
 
+            # Define all profiles of all panes by inheritance or specification
             paneprofiles = [p.get("profile",profile) if type(p) == dict else profile for p in window.get("panes",[])]
-            print "profiles first,default,panes:",firstprofile,profile,paneprofiles
+            #print "profiles first,default,panes:",firstprofile,profile,paneprofiles
 
             if num > 0:
+                # first TAB has been created before this function, so apply window profile
                 ps = "default profile" if firstprofile == "default" else "profile \"%s\"" % firstprofile                
                 if self.new_iterm:
                     self.applescript.append('tell current window')

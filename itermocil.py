@@ -593,7 +593,7 @@ class Itermocil(object):
                 self.focus_on_pane(focus_pane)
 
             else:
-                commands = []
+                commands = base_command
                 if 'command' in window:
                     commands.append(window['command'])
                 elif 'commands' in window:

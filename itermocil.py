@@ -218,13 +218,23 @@ class Itermocil(object):
             for p in range(2, num_panes-1):
                 self.applescript.append(create_pane(p-1, p, "vertical"))
 
-        # 'double-main-vertical' layouts have two bottom panes that spllit the width
-        # and then split the remaining panes vertically across the top
+        # 'double-main-vertical' layouts have two bottom panes that split the width
+        # and then splits a single pane vertically 3 timesacross the top
         elif layout == 'double-main-vertical':
 
             self.applescript.append(create_pane(1, 2, "vertical"))
             self.applescript.append(create_pane(2, 3, "vertical"))
             for p in range(4, num_panes+1):
+                self.applescript.append(create_pane(p-1, p, "horizontal"))
+
+        # 'triple-main-vertical' layouts have three full panes that split the width,
+        # and a forth one that splits vertically across the top
+        elif layout == 'triple-main-vertical':
+
+            self.applescript.append(create_pane(1, 2, "vertical"))
+            self.applescript.append(create_pane(2, 3, "vertical"))
+            self.applescript.append(create_pane(3, 4, "vertical"))
+            for p in range(5, num_panes+1):
                 self.applescript.append(create_pane(p-1, p, "horizontal"))
 
         # 'tiled' layouts create 2 columns and then however many rows as

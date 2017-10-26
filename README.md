@@ -77,7 +77,7 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 | `command`  | A command to run in the current window. Ignored if `panes` is present
 | `commands` | An array of commands for run in the current window. Ignored if either `panes` or `command `is present
 | `focus`    | This is currently unsupported in iTermocil
-
+| `here`     | Uses the current window as the layout’s first window. Only a single window can have this option
 
 ### Panes
 

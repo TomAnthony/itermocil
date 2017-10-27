@@ -241,7 +241,6 @@ windows:
   - name: pane-less
     root: ~/Code/sample/www
     command: rails console
-windows:
   - name: one_more-pane-less
     root: ~/Code/sample/www
     commands:

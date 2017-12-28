@@ -695,8 +695,10 @@ def main():
 
         if not filepath:
             filepath = os.path.join(itermocil_dir, layout + ".yml")
-            if not os.path.isfile(filepath):
-                filepath = os.path.join(teamocil_dir, layout + ".yml")
+            if not os.path.isfile(filepath) and os.path.isdir(teamocil_dir):
+                teamocil_file_path = os.path.join(teamocil_dir, layout + ".yml")
+                if os.path.isfile(teamocil_file_path):
+                    filepath = teamocil_file_path
 
     # If --edit the try to launch editor and exit
     if args.edit:

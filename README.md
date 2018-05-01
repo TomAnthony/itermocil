@@ -1,6 +1,6 @@
 ## Introduction
 
-iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files to save your layouts. If your using session restoration or saved window layouts in iTerm, you should find iTermocil is a nice upgrade on that.
+iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files to save your layouts. If you are using session restoration or saved window layouts in iTerm, you should find iTermocil is a nice upgrade on that.
 
 iTermocil supports iTerm 2.x and the new 3.x (including later betas). It works better with the new 3.x versions which have improved Applescript support.
 

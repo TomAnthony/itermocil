@@ -10,7 +10,7 @@ import yaml
 from math import ceil
 
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 
 class Itermocil(object):
@@ -695,8 +695,9 @@ def main():
 
         if not filepath:
             filepath = os.path.join(itermocil_dir, layout + ".yml")
-            if not os.path.isfile(filepath):
-                filepath = os.path.join(teamocil_dir, layout + ".yml")
+            filepath_teamocil = os.path.join(teamocil_dir, layout + ".yml")
+            if not os.path.isfile(filepath) and os.path.isfile(filepath_teamocil):
+                filepath = filepath_teamocil
 
     # If --edit the try to launch editor and exit
     if args.edit:

@@ -54,6 +54,7 @@ class Itermocil(object):
 
         # This will be where we build up the script.
         self.applescript = []
+        self.define_handlers()
         self.applescript.append('tell application "iTerm"')
         self.applescript.append('activate')
 
@@ -79,6 +80,24 @@ class Itermocil(object):
 
         # Finish the script
         self.applescript.append('end tell')
+
+    def define_handlers(self):
+        sid_hacker = \
+"""on hack_sid(the_pane)
+    try
+        set x to the_pane as string
+        return id of the_pane
+    on error errm
+        set quote_offset to (offset of "\\"" in errm)
+        set remainder to text (quote_offset + 1) thru end of errm
+        set quote_offset_2 to (offset of "\\"" in remainder)
+        set sid to text 1 thru (quote_offset_2 - 1) of remainder
+        return sid
+    end try
+end hack_sid"""
+
+        if self.new_iterm:
+            self.applescript.append(sid_hacker)
 
     def get_version_string(self):
         """ Get version of iTerm. 'iTerm2' (iTerm 2.9+) has much improved
@@ -156,13 +175,13 @@ class Itermocil(object):
 
         def create_pane(parent, child, split="vertical"):
 
-            return (''' tell pane_{pp}
-                            set pane_{cp} to (split {o}ly with same profile)
+            return (''' tell session id pane_{pp} of current tab of current window
+                            set pane_{cp} to my hack_sid(split {o}ly with same profile)
                         end tell
                     '''.format(pp=parent, cp=child, o=split))
 
         # Link a variable to the current window.
-        self.applescript.append("set pane_1 to (current session of current window)")
+        self.applescript.append("set pane_1 to my hack_sid(current session of current window)")
 
         # If we have just one pane we don't need to do any splitting.
         if num_panes <= 1:
@@ -434,7 +453,7 @@ class Itermocil(object):
         # Determine the correct target for Applescript's 'tell' command
         # based upon iTerm version.
         if self.new_iterm:
-            tell_target = 'pane_%s' % pane
+            tell_target = 'session id pane_%s of current tab of current window' % pane
         else:
             # Converts numbers to 2nd, 3rd, 4th format for Applescript
             ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
@@ -479,7 +498,7 @@ class Itermocil(object):
         # Determine the correct target for Applescript's 'tell' command
         # based upon iTerm version.
         if self.new_iterm:
-            self.applescript.append(''' tell pane_{pane}
+            self.applescript.append(''' tell session id pane_{pane}
                                         select
                                     end tell
                                 '''.format(pane=pane))

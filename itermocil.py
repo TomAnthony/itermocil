@@ -600,6 +600,18 @@ class Itermocil(object):
                     commands = window['commands']
                 self.initiate_window(commands)
 
+            # Check if input should be broadcasted
+            if "broadcastInput" in window:
+                self.applescript.append('tell application "System Events"')
+
+                # Check if broadcast should be for the specific window or the whole terminal
+                if window['broadcastInput'] in "window":
+                    self.applescript.append('key code 34 using {command down, option down}')
+                elif window['broadcastInput'] in "terminal":
+                    self.applescript.append('key code 34 using {command down, shift down}')
+
+                self.applescript.append('end tell')
+
 
 def main():
 

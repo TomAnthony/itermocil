@@ -68,16 +68,27 @@ iTermocil is compatible with all of teamocil's flags, and they all work in the s
 
 ### Windows
 
-| Key        | Description
-|------------|----------------------------
-| `name`     | All iTerm panes in this window will be given this name.
-| `root`     | The path where all panes in the window will be started
-| `layout`   | The layout format that iTermocil will use (see below)
-| `panes`    | An `Array` of panes
-| `command`  | A command to run in the current window. Ignored if `panes` is present
-| `commands` | An array of commands for run in the current window. Ignored if either `panes` or `command `is present
-| `focus`    | This is currently unsupported in iTermocil
+| Key               | Description
+|-------------------|----------------------------
+| `name`            | All iTerm panes in this window will be given this name.
+| `root`            | The path where all panes in the window will be started
+| `layout`          | The layout format that iTermocil will use (see below)
+| `broadcastInput`  | Broadcast input see further instructions below.
+| `panes`           | An `Array` of panes
+| `command`         | A command to run in the current window. Ignored if `panes` is present
+| `commands`        | An array of commands for run in the current window. Ignored if either `panes` or `command `is present
+| `focus`           | This is currently unsupported in iTermocil
 
+#### broadcastInput
+
+This is both a very powerful feature, in that it can allow you to configure many servers at the same time, and very dangerous in that it can allow you to inadvertently destroy many servers at the same time.
+
+With great power… Moving on.
+
+| Value      | Description
+|------------|----------------------------
+| `window`   | Will broadcast input to all panes in the window.
+| `terminal` | Will broadcast input to all windows and panes in the terminal.
 
 ### Panes
 

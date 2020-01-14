@@ -14,13 +14,13 @@ __version__ = '0.2.2'
 
 
 class Itermocil(object):
-    """ Read the teamocil file and build an Applescript that will configure
+    """ Read the itermocil file and build an Applescript that will configure
         iTerm into the correct layout. Uses an Applescript to establish
         which version of iTerm is being used and supplies different
         Applescript based upon that.
     """
 
-    def __init__(self, teamocil_file, here=False, cwd=None):
+    def __init__(self, itermocil_file, here=False, cwd=None):
         """ Establish iTerm version, and initialise the list which
             will contain all the Applescript commands to execute.
         """
@@ -44,7 +44,7 @@ class Itermocil(object):
                     sys.exit(1)
 
         # Initiate from arguments
-        self.file = teamocil_file
+        self.file = itermocil_file
         self.here = here
         self.cwd = cwd
 
@@ -125,7 +125,7 @@ class Itermocil(object):
         return num.strip()
 
     def execute(self):
-        """ Execute the Applescript built by parsing the teamocil file.
+        """ Execute the Applescript built by parsing the itermocil file.
         """
 
         parsed_script = "\n".join(self.applescript)
@@ -147,7 +147,7 @@ class Itermocil(object):
 
     def arrange_panes(self, num_panes, layout="tiled"):
         """ Create a set of Applescript instructions to generate the desired
-            layout of panes. Attempt to match teamocil layout behaviour as
+            layout of panes. Attempt to match itermocil layout behaviour as
             closely as is possible.
 
             See 'arrange_panes_old_iterm' for an alternate version for
@@ -276,7 +276,7 @@ class Itermocil(object):
 
     def arrange_panes_old_iterm(self, num_panes, layout="tiled"):
         """ Create a set of Applescript instructions to generate the desired
-            layout of panes. Attempt to match teamocil layout behaviour as
+            layout of panes. Attempt to match itermocil layout behaviour as
             closely as is possible.
 
             See 'arrange_panes' for the main version used for generating
@@ -604,7 +604,7 @@ class Itermocil(object):
 def main():
 
     parser = argparse.ArgumentParser(
-        description='Process a teamocil file natively in iTerm2 (i.e. without tmux).',
+        description='Process a itermocil file natively in iTerm2 (i.e. without tmux).',
         usage='%(prog)s [options] <layout>'
     )
 
@@ -613,7 +613,7 @@ def main():
                         metavar="layout",
                         nargs="*")
 
-    # teamocil compatible flags:
+    # itermocil compatible flags:
 
     parser.add_argument("--here",
                         help="run in the current terminal",
@@ -631,12 +631,12 @@ def main():
                         default=False)
 
     parser.add_argument("--layout",
-                        help="specify a layout file rather looking in the ~/.teamocil",
+                        help="specify a layout file rather looking in the ~/.itermocil",
                         action="store_true",
                         default=None)
 
     parser.add_argument("--list",
-                        help="show the available layouts in ~/teamocil",
+                        help="show the available layouts in ~/itermocil",
                         action="store_true",
                         default=False)
 
@@ -662,7 +662,7 @@ def main():
         print __version__
         sys.exit(0)
 
-    # If --list then show the layout names in ~./teamocil
+    # If --list then show the layout names in ~/.itermocil or ~/.teamocil
     if args.list:
         for d in [itermocil_dir, teamocil_dir]:
             if os.path.isdir(d):
@@ -686,7 +686,7 @@ def main():
         # Sanitize input
         layout = re.sub("[\*\?\[\]\'\"\\\$\;\&\(\)\|\^\<\>]", "", layout)
 
-    # Build teamocil file path based on presence of --layout flag.
+    # Build itermocil file path based on presence of --layout flag.
     if args.layout:
         filepath = os.path.join(os.getcwd(), layout)
     else:
@@ -717,7 +717,7 @@ def main():
 
         sys.exit(0)
 
-    # Check teamocil file exists
+    # Check itermocil file exists
     if not os.path.isfile(filepath):
         print "ERROR: There is no file at: " + filepath
         sys.exit(1)
@@ -728,7 +728,7 @@ def main():
             print fin.read()
             sys.exit(0)
 
-    # Parse the teamocil file and execute it.
+    # Parse the itermocil file and execute it.
     cwd = os.getcwd()
     instance = Itermocil(filepath, here=args.here, cwd=cwd)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python3.7
+#!/usr/bin/python
 
 import argparse
 import os
@@ -50,7 +50,7 @@ class Itermocil(object):
 
         # Open up the file and parse it with PyYaml
         with open(self.file, 'r') as f:
-            self.parsed_config = yaml.load(f, Loader=yaml.FullLoader)
+            self.parsed_config = yaml.load(f, Loader=yaml.SafeLoader)
 
         # This will be where we build up the script.
         self.applescript = []

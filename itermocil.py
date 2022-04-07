@@ -233,7 +233,7 @@ class Itermocil(object):
         elif layout == 'tiled':
 
             vertical_splits = int(ceil((num_panes / 2.0))) - 1
-            second_columns = num_panes / 2
+            second_columns = num_panes // 2
 
             for p in range(0, vertical_splits):
                 pp = (p * 2) + 1
@@ -351,7 +351,7 @@ class Itermocil(object):
         elif layout == 'tiled':
 
             vertical_splits = int(ceil((num_panes / 2.0))) - 1
-            second_columns = num_panes / 2
+            second_columns = num_panes // 2
 
             for p in range(0, vertical_splits):
                 self.applescript.append(prefix + 'keystroke "D" using command down')

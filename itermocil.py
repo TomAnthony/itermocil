@@ -33,7 +33,7 @@ class Itermocil(object):
             self.new_iterm = False
         else:
             # Temporary check to check for unsupported version of iTerm beta
-            v = self.get_version_string()
+            v = self.get_version_string().decode('utf-8')
             bits = v.split('.')
             if len(bits) > 2 and '-nightly' in str(major_version):
                 build = bits[2].replace('-nightly', '')
@@ -89,7 +89,7 @@ class Itermocil(object):
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
 
-        version_script = 'set iterm_version to (get version of application "iTerm")'
+        version_script = 'set iterm_version to (get version of application "iTerm")'.encode('utf-8')
         v = osa.communicate(version_script)[0]
 
         return v.strip()
@@ -128,7 +128,7 @@ class Itermocil(object):
         """ Execute the Applescript built by parsing the teamocil file.
         """
 
-        parsed_script = "\n".join(self.applescript)
+        parsed_script = "\n".join(self.applescript).encode('utf-8')
 
         osa = subprocess.Popen(['osascript', '-'],
                                stdin=subprocess.PIPE,

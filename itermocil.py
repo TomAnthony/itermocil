@@ -504,7 +504,7 @@ class Itermocil(object):
                 total_pane_count -= 1
 
         if 'windows' not in self.parsed_config:
-            print("ERROR: No windows defined in ") + self.file
+            print("ERROR: No windows defined in " + self.file)
             sys.exit(1)
 
         for num, window in enumerate(self.parsed_config['windows']):
@@ -719,7 +719,7 @@ def main():
 
     # Check teamocil file exists
     if not os.path.isfile(filepath):
-        print("ERROR: There is no file at: ") + filepath
+        print("ERROR: There is no file at: " + filepath)
         sys.exit(1)
 
     # If --show then output and exit()

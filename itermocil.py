@@ -38,9 +38,9 @@ class Itermocil(object):
             if len(bits) > 2 and '-nightly' in str(major_version):
                 build = bits[2].replace('-nightly', '')
                 if (int(build) < 20150805):
-                    print "This is an unsupported beta build of iTerm."
-                    print "Try the latest nightly, or the 2.1.1 stable build."
-                    print "See Readme notes for more info. Sorry!"
+                    print("This is an unsupported beta build of iTerm.")
+                    print("Try the latest nightly, or the 2.1.1 stable build.")
+                    print("See Readme notes for more info. Sorry!")
                     sys.exit(1)
 
         # Initiate from arguments
@@ -50,7 +50,7 @@ class Itermocil(object):
 
         # Open up the file and parse it with PyYaml
         with open(self.file, 'r') as f:
-            self.parsed_config = yaml.load(f)
+            self.parsed_config = yaml.load(f, Loader=yaml.SafeLoader)
 
         # This will be where we build up the script.
         self.applescript = []
@@ -445,25 +445,35 @@ class Itermocil(object):
         if name:
             name_command = 'set name to "' + name + '"'
 
-        # Turn commands list into a string command
-        command = "; ".join(commands)
+        # Turn commands string into a list
+        if isinstance(commands, str):
+            commands = [commands]
 
         # Build the applescript snippet.
         self.applescript.append(
-            ''' tell {tell_target}
+            ''' tell {tell_target}'''.format(tell_target=tell_target))
+        for command in commands:
+            self.applescript.append('''
                     write text "{command}"
+                '''.format(command=command))
+        self.applescript.append('''
                     {name}
                 end tell
-            '''.format(tell_target=tell_target, command=command, name=name_command))
+            '''.format(name=name_command))
 
     def initiate_window(self, commands=None):
         """ Runs the list of commands in the current pane
         """
-        command = "; ".join(commands)
+        if commands is None:
+            commands = []
         self.applescript.append(
-            ''' tell current session of current window
+            ''' tell current session of current window''')
+        for command in commands:
+            self.applescript.append('''
                     write text "{command}"
-                end tell
+                '''.format(command=command))
+        self.applescript.append(''')
+            end tell
             '''.format(command=command))
 
     def focus_on_pane(self, pane):

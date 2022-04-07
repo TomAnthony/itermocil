@@ -251,7 +251,7 @@ class Itermocil(object):
         elif layout == '3_columns':
 
             vertical_splits = int(ceil((num_panes / 3.0))) - 1
-            second_columns = num_panes / 3
+            second_columns = num_panes // 3
             i = 1
 
             for p in range(0, vertical_splits):

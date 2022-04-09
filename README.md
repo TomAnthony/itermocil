@@ -11,6 +11,7 @@ iTermocil supports iTerm 2.x and the new 3.x (including later betas). It works b
 ```bash
 # Install `itermocil` via Homebrew
 $ brew update
+$ brew install python
 $ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory

@@ -60,7 +60,7 @@ class Itermocil(object):
 
         # If we need to open a new window, then add necessary commands
         # to script.
-        if not self.here:
+        if not self.use_current_window():
             if self.new_iterm:
                 self.applescript.append('tell current window')
                 self.applescript.append('create tab with default profile')
@@ -486,6 +486,15 @@ class Itermocil(object):
                 self.applescript.append('tell i term application "System Events" ' +
                                         'to keystroke "]" using command down')
 
+    def use_current_window(self):
+        return self.here or self.windows_with_here_count() > 0
+
+    def windows_with_here_count(self):
+        return len(filter(lambda w: w.get('here', False), self.parsed_config['windows']))
+
+    def windows_with_here_first(self):
+        return sorted(self.parsed_config['windows'], key=lambda w: w.get('here', False), reverse=True)
+
     def process_file(self):
         """ Parse the named iTermocil file, generate Applescript to send to
             iTerm2 to generate panes, name them and run the specified commands
@@ -498,14 +507,18 @@ class Itermocil(object):
             total_pane_count = 0
         else:
             total_pane_count = int(self.get_num_panes_in_current_window())
-            if self.here:
+            if self.use_current_window():
                 total_pane_count -= 1
 
         if 'windows' not in self.parsed_config:
             print("ERROR: No windows defined in " + self.file)
             sys.exit(1)
 
-        for num, window in enumerate(self.parsed_config['windows']):
+        if self.windows_with_here_count() > 1:
+            print "ERROR: Multiple windows can not set 'here' in " + self.file
+            sys.exit(1)
+
+        for num, window in enumerate(self.windows_with_here_first()):
             if num > 0:
                 if self.new_iterm:
                     self.applescript.append('tell current window')
@@ -532,7 +545,7 @@ class Itermocil(object):
                     parsed_path = window['root'].replace(" ", "\\\ ")
                     base_command.append('cd {path}'.format(path=parsed_path))
                 else:
-                    if self.here:
+                    if window.get('here', False):
                         parsed_path = self.cwd.replace(" ", "\\\ ")
                         base_command.append('cd {path}'.format(path=parsed_path))
                     pass

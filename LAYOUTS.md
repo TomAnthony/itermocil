@@ -256,3 +256,35 @@ windows:
 |           |             |           |
 '-----------'-------------'-----------'
 ```
+
+### triple-main-vertical
+
+Create 3 full height columns on the left, and a fourth column with as many rows as needed.
+
+```yaml
+windows:
+  - name: sample-triple-main
+    root: ~/Code/sample/www
+    layout: triple-main-vertical
+    panes:
+      - vim
+      - git log
+      - guard
+      - tail -f log/development.log
+      - rails console
+      - ls
+```
+
+```
+.-----------.------------.------------.-----------.
+| (0)       | (1)        |  (2)       | (3)       |
+|           |            |            |           |
+|           |            |            |-----------|
+|           |            |            | (4)       |
+|           |            |            |           |
+|           |            |            |-----------|
+|           |            |            | (5)       |
+|           |            |            |           |
+|           |            |            |           |
+'-----------'------------'------------'-----------'
+```

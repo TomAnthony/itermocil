@@ -613,37 +613,37 @@ def main():
 
     # teamocil compatible flags:
 
-    parser.add_argument("--here",
+    parser.add_argument("--here", "-H",
                         help="run in the current terminal",
                         action="store_true",
                         default=False)
 
-    parser.add_argument("--edit",
+    parser.add_argument("--edit", "-e",
                         help="edit file in $EDITOR if set, otherwise open in GUI",
                         action="store_true",
                         default=False)
 
-    parser.add_argument("--show",
+    parser.add_argument("--show", "-s",
                         help="show the layout instead of executing it",
                         action="store_true",
                         default=False)
 
-    parser.add_argument("--layout",
+    parser.add_argument("--layout", "-L",
                         help="specify a layout file rather looking in the ~/.teamocil",
                         action="store_true",
                         default=None)
 
-    parser.add_argument("--list",
+    parser.add_argument("--list", "-l",
                         help="show the available layouts in ~/teamocil",
                         action="store_true",
                         default=False)
 
-    parser.add_argument("--version",
+    parser.add_argument("--version", "-v",
                         help="show iTermocil version",
                         action="store_true",
                         default=None)
 
-    parser.add_argument("--debug",
+    parser.add_argument("--debug", "-d",
                         help="output the iTerm Applescript instead of executing it",
                         action="store_true",
                         default=None)

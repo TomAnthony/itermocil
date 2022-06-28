@@ -7,6 +7,8 @@ import yaml
 
 from math import ceil
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 __version__ = '1.0.3'
 

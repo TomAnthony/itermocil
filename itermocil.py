@@ -75,9 +75,19 @@ class Itermocil(object):
         # Process the file, building the script.
         self.process_file()
 
-        if self.broadcast:
-            self.applescript.append('tell application "System Events" ' +
+        match self.broadcast:
+            case 'panes':
+                self.applescript.append('tell application "System Events" ' +
                                         'to keystroke "i" using {option down, command down}')
+
+            case 'none':
+                # do nothing
+                pass
+
+            case _:
+                print("ERROR: broadcast mode not supported")
+                sys.exit(1)
+
 
         # Finish the script
         self.applescript.append('end tell')
@@ -544,8 +554,9 @@ class Itermocil(object):
                 print('no root!')
 
             if 'broadcast' in window:
-                self.broadcast = "panes"
-
+                self.broadcast = window['broadcast']
+            else:
+                self.broadcast = "none"
 
             # Generate Applescript to lay the panes out and then add to our
             # Applescript commands to run.

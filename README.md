@@ -1,6 +1,6 @@
 ## Introduction
 
-iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files to save your layouts. If your using session restoration or saved window layouts in iTerm, you should find iTermocil is a nice upgrade on that.
+iTermocil allows you to setup pre-configured layouts of windows and panes in [iTerm2](https://iterm2.com/), having each open in a specified directory and execute specified commands. You do this by writing YAML files to save your layouts. If you're using session restoration or saved window layouts in iTerm, you should find iTermocil is a nice upgrade on that.
 
 iTermocil supports iTerm 2.x and the new 3.x (including later betas). It works better with the new 3.x versions which have improved Applescript support.
 
@@ -252,7 +252,6 @@ windows:
   - name: pane-less
     root: ~/Code/sample/www
     command: rails console
-windows:
   - name: one_more-pane-less
     root: ~/Code/sample/www
     commands:
@@ -280,7 +279,7 @@ In tmux it is 'windows' that have names, whereas in iTerm each pane in a window 
 
 iTermocil works for iTerm 2+, but the script support is better in iTerm 2.9 beta so things run a bit faster/cleaner with iTerm 2.9+. If using beta builds you should grab the [latest nightly](https://iterm2.com/nightly/latest), as the 2.9.20150626 'recommended beta' build does not have the required script hooks for iTermocil to work (and I have no plans to kludge something just for an incomplete beta that will never be released).
 
-Currently, everything is Python 2 and so if you are using Python 3 by default you may need to tweak the #! line.
+Starting with version 1.0.0, iTermocil uses Python3. If you need iTermocil for Python2, please use [0.2.1](https://github.com/TomAnthony/itermocil/releases/tag/0.2.1).
 
 ## Shell autocompletion
 

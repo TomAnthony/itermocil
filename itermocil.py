@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import argparse
 import os
 import re
@@ -10,7 +8,7 @@ import yaml
 from math import ceil
 
 
-__version__ = '0.2.2'
+__version__ = '1.0.3'
 
 
 class Itermocil(object):
@@ -33,14 +31,14 @@ class Itermocil(object):
             self.new_iterm = False
         else:
             # Temporary check to check for unsupported version of iTerm beta
-            v = self.get_version_string()
+            v = self.get_version_string().decode('utf-8')
             bits = v.split('.')
             if len(bits) > 2 and '-nightly' in str(major_version):
                 build = bits[2].replace('-nightly', '')
                 if (int(build) < 20150805):
-                    print "This is an unsupported beta build of iTerm."
-                    print "Try the latest nightly, or the 2.1.1 stable build."
-                    print "See Readme notes for more info. Sorry!"
+                    print("This is an unsupported beta build of iTerm.")
+                    print("Try the latest nightly, or the 2.1.1 stable build.")
+                    print("See Readme notes for more info. Sorry!")
                     sys.exit(1)
 
         # Initiate from arguments
@@ -50,7 +48,7 @@ class Itermocil(object):
 
         # Open up the file and parse it with PyYaml
         with open(self.file, 'r') as f:
-            self.parsed_config = yaml.load(f)
+            self.parsed_config = yaml.load(f, Loader=yaml.Loader)
 
         # This will be where we build up the script.
         self.applescript = []
@@ -89,7 +87,7 @@ class Itermocil(object):
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
 
-        version_script = 'set iterm_version to (get version of application "iTerm")'
+        version_script = 'set iterm_version to (get version of application "iTerm")'.encode('utf-8')
         v = osa.communicate(version_script)[0]
 
         return v.strip()
@@ -128,7 +126,7 @@ class Itermocil(object):
         """ Execute the Applescript built by parsing the teamocil file.
         """
 
-        parsed_script = "\n".join(self.applescript)
+        parsed_script = "\n".join(self.applescript).encode('utf-8')
 
         osa = subprocess.Popen(['osascript', '-'],
                                stdin=subprocess.PIPE,
@@ -233,7 +231,7 @@ class Itermocil(object):
         elif layout == 'tiled':
 
             vertical_splits = int(ceil((num_panes / 2.0))) - 1
-            second_columns = num_panes / 2
+            second_columns = num_panes // 2
 
             for p in range(0, vertical_splits):
                 pp = (p * 2) + 1
@@ -251,7 +249,7 @@ class Itermocil(object):
         elif layout == '3_columns':
 
             vertical_splits = int(ceil((num_panes / 3.0))) - 1
-            second_columns = num_panes / 3
+            second_columns = num_panes // 3
             i = 1
 
             for p in range(0, vertical_splits):
@@ -351,7 +349,7 @@ class Itermocil(object):
         elif layout == 'tiled':
 
             vertical_splits = int(ceil((num_panes / 2.0))) - 1
-            second_columns = num_panes / 2
+            second_columns = num_panes // 2
 
             for p in range(0, vertical_splits):
                 self.applescript.append(prefix + 'keystroke "D" using command down')
@@ -504,7 +502,7 @@ class Itermocil(object):
                 total_pane_count -= 1
 
         if 'windows' not in self.parsed_config:
-            print "ERROR: No windows defined in " + self.file
+            print("ERROR: No windows defined in " + self.file)
             sys.exit(1)
 
         for num, window in enumerate(self.parsed_config['windows']):
@@ -539,7 +537,7 @@ class Itermocil(object):
                         base_command.append('cd {path}'.format(path=parsed_path))
                     pass
             else:
-                print 'no root!'
+                print('no root!')
 
             # Generate Applescript to lay the panes out and then add to our
             # Applescript commands to run.
@@ -671,14 +669,14 @@ def main():
 
     # If --version then show the version number
     if args.version:
-        print __version__
+        print(__version__)
         sys.exit(0)
 
     # If --list then show the layout names in ~./teamocil
     if args.list:
         for d in [itermocil_dir, teamocil_dir]:
             if os.path.isdir(d):
-                print d
+                print(d)
                 for file in os.listdir(d):
                     if file.endswith(".yml"):
                         print("  " + file[:-4])
@@ -705,7 +703,7 @@ def main():
         if not filepath:
             if not os.path.isdir(itermocil_dir):
                 if not os.path.isdir(teamocil_dir):
-                    print "ERROR: No ~/.itermocil or ~/.teamocil directory"
+                    print("ERROR: No ~/.itermocil or ~/.teamocil directory")
                     sys.exit(1)
 
             filepath = os.path.join(itermocil_dir, layout + ".yml")
@@ -731,13 +729,13 @@ def main():
 
     # Check teamocil file exists
     if not os.path.isfile(filepath):
-        print "ERROR: There is no file at: " + filepath
+        print("ERROR: There is no file at: " + filepath)
         sys.exit(1)
 
     # If --show then output and exit()
     if args.show:
         with open(filepath, 'r') as fin:
-            print fin.read()
+            print(fin.read())
             sys.exit(0)
 
     # Parse the teamocil file and execute it.
@@ -766,7 +764,7 @@ def main():
                 indent += "\t"
 
         formatted_script.append("")
-        print "\n".join(formatted_script)
+        print("\n".join(formatted_script))
     else:
         instance.execute()
 

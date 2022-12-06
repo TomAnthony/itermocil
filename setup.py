@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='itermocil',
-    version='0.2.2',
+    version='1.0.3',
     url='https://github.com/TomAnthony/itermocil',
     license='MIT',
     description='Create pre-defined window/pane layouts and run commands in iTerm',
-    author='Tom Anthony',
+    author='Tom Anthony, Ruud Kamphuis, Guillaume Leclerc',
     author_email='',
     packages=find_packages(),
     py_modules=['itermocil'],

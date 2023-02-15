@@ -52,6 +52,7 @@ class Itermocil(object):
 
         # This will be where we build up the script.
         self.applescript = []
+        self.applescript_end = []
         self.applescript.append('tell application "iTerm"')
         self.applescript.append('activate')
 
@@ -74,6 +75,10 @@ class Itermocil(object):
 
         # Process the file, building the script.
         self.process_file()
+
+        # Join end commands to main script
+        self.applescript.append("delay 1")
+        self.applescript.extend(self.applescript_end)
 
         # Finish the script
         self.applescript.append('end tell')
@@ -450,9 +455,15 @@ class Itermocil(object):
         self.applescript.append(
             ''' tell {tell_target}
                     write text "{command}"
+                end tell
+            '''.format(tell_target=tell_target, command=command))
+
+        # Build the applescript end snippet.
+        self.applescript_end.append(
+            ''' tell {tell_target}
                     {name}
                 end tell
-            '''.format(tell_target=tell_target, command=command, name=name_command))
+            '''.format(tell_target=tell_target, name=name_command))
 
     def initiate_window(self, commands=None):
         """ Runs the list of commands in the current pane

@@ -1,0 +1,9 @@
+windows:
+  - name: _named_pane
+    root: ~
+    layout: tiled
+    panes:
+      - command: 'echo pane 1'
+        name: 'Pane 1'
+      - command: 'echo pane 2'
+        name: 'Pane 2'

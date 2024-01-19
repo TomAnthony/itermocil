@@ -157,9 +157,9 @@ windows:
 '----------------------'----------------------'
 ```
 
-### 3_columns
+### 3_columns, 4_columns, 5_columns, etc
 
-Creates 3 columns and then however many rows as needed. If the number of panes isn't divisible by 3 then the final row will have fewer columns.
+Creates the provided number of columns and then however many rows as needed. If the number of panes isn't divisible by number of columns then the final row will have fewer columns.
 
 ```yaml
 windows:
@@ -192,6 +192,47 @@ windows:
 |            |            |            |
 |            |            |            |
 '------------'------------'------------'
+```
+
+```yaml
+windows:
+  - name: sample-4-columns
+    root: ~
+    layout: 4_columns
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"
+      - echo "pane 4"
+      - echo "pane 5"
+      - echo "pane 6"
+      - echo "pane 7"
+      - echo "pane 8"
+      - echo "pane 10"
+      - echo "pane 11"
+      - echo "pane 12"
+      - echo "pane 13"
+      - echo "pane 14"
+
+```
+```
+.------------.------------.------------.------------.
+| (0)        | (1)        | (2)        | (3)        |
+|            |            |            |            |
+|            |            |            |            |
+|------------|------------|------------|------------|
+| (4)        | (5)        | (6)        | (7)        |
+|            |            |            |            |
+|            |            |            |            |
+|------------|------------|------------|------------|
+| (8)        | (9)        | (10)       | (11)       |
+|            |            |            |            |
+|            |            |            |            |
+|------------'------------'------------'------------|
+| (12)                    | (13)                    |
+|                         |                         |
+|                         |                         |
+'-------------------------'-------------------------'
 ```
 
 ### double-main-horizontal

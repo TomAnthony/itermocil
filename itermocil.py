@@ -8,7 +8,7 @@ import yaml
 from math import ceil
 
 
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 
 class Itermocil(object):
@@ -243,24 +243,26 @@ class Itermocil(object):
                 cp = pp + 1
                 self.applescript.append(create_pane(pp, cp, "vertical"))
 
-        # '3_columns' layouts create 3 columns and then however many rows as
-        # needed. If there are odd number of panes then the bottom pane
-        # spans two columns. Panes are numbered top to bottom, left to right.
-        elif layout == '3_columns':
+        # '#_columns' layouts create the provided number of columns and then
+        # however many rows as needed. If the number of panes isn't divisible
+        # by number of columns then the final row will have fewer columns.
+        # Panes are numbered top to bottom, left to right.
+        elif layout.endswith('_columns'):
 
-            vertical_splits = int(ceil((num_panes / 3.0))) - 1
-            second_columns = num_panes // 3
+            column_count = int(layout.split("_")[0])
+            vertical_splits = int(ceil((num_panes / float(column_count)))) - 1
+            second_columns = num_panes / column_count
             i = 1
 
             for p in range(0, vertical_splits):
-                pp = (p * 3) + 1
-                cp = pp + 3
+                pp = (p * column_count) + 1
+                cp = pp + column_count
                 i += 1
                 self.applescript.append(create_pane(pp, cp, "horizontal"))
 
             for p in range(0, vertical_splits+1):
-                pp = (p * 3) + 1
-                for q in range(0, 2):
+                pp = (p * column_count) + 1
+                for q in range(0, column_count - 1):
                     if i >= num_panes:
                         break
                     qp = pp + q
@@ -367,12 +369,14 @@ class Itermocil(object):
                 # If odd number of panes then move once more to return to initial pane.
                 self.applescript.append(prefix + 'keystroke "]" using command down')
 
-        # '3_columns' layouts create 3 columns and then however many rows as
-        # needed. If there are odd number of panes then the bottom pane
-        # spans two columns. Panes are numbered top to bottom, left to right.
-        elif layout == '3_columns':
+        # '#_columns' layouts create the provided number of columns and then
+        # however many rows as needed. If the number of panes isn't divisible
+        # by number of columns then the final row will have fewer columns.
+        # Panes are numbered top to bottom, left to right.
+        elif layout.endswith('_columns'):
 
-            vertical_splits = int(ceil((num_panes / 3.0))) - 1
+            column_count = int(layout.split("_")[0])
+            vertical_splits = int(ceil((num_panes / float(column_count)))) - 1
 
             i = 1
             for p in range(0, vertical_splits):

@@ -1,0 +1,20 @@
+windows:
+  - name: _5_columns
+    root: ~
+    layout: 5_columns
+    panes:
+      - echo "pane 1"
+      - echo "pane 2"
+      - echo "pane 3"
+      - echo "pane 4"
+      - echo "pane 5"
+      - echo "pane 6"
+      - echo "pane 7"
+      - echo "pane 8"
+      - echo "pane 9"
+      - echo "pane 10"
+      - echo "pane 11"
+      - echo "pane 12"
+      - echo "pane 13"
+      - echo "pane 14"
+      - echo "pane 15"
